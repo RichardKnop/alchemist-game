@@ -14,14 +14,11 @@ body {
 	color: white;
 	text-rendering: optimizeLegibility;
 }
+
 #wrapper {
 	position: relative;
 	.container {
-		width: 976px;
-		height: 720px;
-		padding: 24px;
 		margin: 0 auto;
-		text-align: center;
 		overflow: hidden;
 	}
 }

@@ -28,7 +28,7 @@ define([], function() {
 		};
 		
 		this.getHTML = function() {
-			return '<div id="spot-the-difference-puzzle" class="container">Spot The Difference Puzzle</div>';
+			return '<div id="spot-the-difference-puzzle" class="container"><h1>Spot The Difference Puzzle</h1></div>';
 		};
 		
 	};
