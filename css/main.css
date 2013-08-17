@@ -1,1 +1,1 @@
-body{margin:0;padding:0;font:100.1% sans-serif;background:black;color:white}#wrapper{position:relative}#wrapper .container{width:1000px;padding:24px;margin:0 auto;text-align:center;overflow:hidden}
+@font-face{font-family:Tiza;src:url("/fonts/tiza.ttf")}body{margin:0;padding:0;font-size:100.1%;font-family:Tiza,sans-serif;background:black;color:white;text-rendering:optimizeLegibility}#wrapper{position:relative}#wrapper .container{width:976px;height:720px;padding:24px;margin:0 auto;text-align:center;overflow:hidden}
