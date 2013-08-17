@@ -4,7 +4,7 @@ define([], function() {
 
 	return function(maximumX, maximumY) {
 		
-		var grid = [], emptySpace, i;
+		var grid = [], emptySpace, previousMovementTag, i;
 		
 		var x = 1, y = 1;
 		for (i = 0; i < maximumX * maximumY; i++) {
@@ -81,19 +81,19 @@ define([], function() {
 		function getPossibleEmptySpaceMovements() {
 			var possibleMovements = [];
 			
-			if (emptySpaceCanMoveLeft()) {
+			if ("right" !== previousMovementTag && emptySpaceCanMoveLeft()) {
 				possibleMovements.push(moveEmptySpaceLeft);
 			}
 			
-			if (emptySpaceCanMoveRight()) {
+			if ("left" !== previousMovementTag && emptySpaceCanMoveRight()) {
 				possibleMovements.push(moveEmptySpaceRight);
 			}
 			
-			if (emptySpaceCanMoveDown()) {
+			if ("up" !== previousMovementTag && emptySpaceCanMoveDown()) {
 				possibleMovements.push(moveEmptySpaceDown);
 			}
 			
-			if (emptySpaceCanMoveUp()) {
+			if ("down" !== previousMovementTag && emptySpaceCanMoveUp()) {
 				possibleMovements.push(moveEmptySpaceUp);
 			}
 			
@@ -124,16 +124,18 @@ define([], function() {
 			logPointMovement(emptySpace, point);
 			point.x += 1;
 			emptySpace.x -= 1;
+			previousMovementTag = "left";
 		};
 		
 		var moveEmptySpaceRight = function() {
 			var point = getPointByCoordinates(
 				emptySpace.x + 1,
 				emptySpace.y
-			);
+				);
 			logPointMovement(emptySpace, point);
 			point.x -= 1;
 			emptySpace.x += 1;
+			previousMovementTag = "right";
 		};
 		
 		var moveEmptySpaceDown = function() {
@@ -144,6 +146,7 @@ define([], function() {
 			logPointMovement(emptySpace, point);
 			point.y += 1;
 			emptySpace.y -= 1;
+			previousMovementTag = "down";
 		};
 		
 		var moveEmptySpaceUp = function() {
@@ -154,6 +157,7 @@ define([], function() {
 			logPointMovement(emptySpace, point);
 			point.y -= 1;
 			emptySpace.y += 1;
+			previousMovementTag = "up";
 		};
 		
 		function logPointMovement(from, to) {
