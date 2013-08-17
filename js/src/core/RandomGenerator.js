@@ -7,6 +7,10 @@ define([], function() {
 		var maximumX, maximumY;
 		var history = [], historyLimit = 5;
 		
+		this.setServiceManager = function(m) {
+			this.serviceManager = m;
+		};
+		
 		this.setMaximumX = function(x) {
 			maximumX = x;
 		};

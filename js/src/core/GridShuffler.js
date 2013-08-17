@@ -2,26 +2,42 @@ define([], function() {
 
 	"use strict";
 
-	return function(maximumX, maximumY) {
+	return function() {
 		
-		var grid = [], emptySpace, previousMovementTag, i;
+		var maximumX, maximumY;
+		var grid, emptySpace, previousMovementTag, i;
 		
-		var x = 1, y = 1;
-		for (i = 0; i < maximumX * maximumY; i++) {
-			grid.push({
-				originalX: x,
-				originalY: y,
-				x: x,
-				y: y
-			});
-			
-			if (x === maximumX) {
-				x = 1;
-				y += 1;
-			} else {
-				x += 1;
+		this.setServiceManager = function(m) {
+			this.serviceManager = m;
+		};
+		
+		this.setMaximumX = function(x) {
+			maximumX = x;
+		};
+		
+		this.setMaximumY = function(y) {
+			maximumY = y;
+		};
+		
+		this.init = function() {
+			grid = [];
+			var x = 1, y = 1;
+			for (i = 0; i < maximumX * maximumY; i++) {
+				grid.push({
+					originalX: x,
+					originalY: y,
+					x: x,
+					y: y
+				});
+
+				if (x === maximumX) {
+					x = 1;
+					y += 1;
+				} else {
+					x += 1;
+				}
 			}
-		}
+		};
 		
 		this.getGrid = function() {
 			return grid;

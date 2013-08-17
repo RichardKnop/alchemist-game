@@ -6,7 +6,10 @@ define([
 
 	return function() {
 		
-		var shuffler = new GridShuffler(3, 3), emptySpace;
+		var shuffler = new GridShuffler(), emptySpace;
+		shuffler.setMaximumX(3);
+		shuffler.setMaximumY(3);
+		shuffler.init();
 		
 		this.runTests = function() {
 			

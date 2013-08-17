@@ -1,10 +1,10 @@
 define([
 	"vendor/domReady",
-	"testSrc/core/RandomCoordinateGeneratorTest",
+	"testSrc/core/RandomGeneratorTest",
 	"testSrc/core/GridShufflerTest"
 ], function(
 	domReady,
-	RandomCoordinateGeneratorTest,
+	RandomGeneratorTest,
 	GridShufflerTest
 ) {
 
@@ -14,7 +14,7 @@ define([
 		
 		var testCase;
 		
-		testCase = new RandomCoordinateGeneratorTest();
+		testCase = new RandomGeneratorTest();
 		testCase.runTests();
 		
 		testCase = new GridShufflerTest();
