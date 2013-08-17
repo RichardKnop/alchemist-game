@@ -11,6 +11,8 @@ define([], function() {
 		};
 		
 		this.init = function() {
+			console.log("Creating a new shuffle puzzle");
+			
 			this.app = this.serviceManager.getService("Application");
 			this.gen = this.serviceManager.getService("RandomGenerator");
 			this.shfl = this.serviceManager.getService("GridShuffler");
@@ -31,6 +33,8 @@ define([], function() {
 			
 			grid = this.shfl.getGrid();
 			remainingTime = this.app.getRemainingTime();
+			
+			return this;
 		};
 		
 		this.getHTML = function() {

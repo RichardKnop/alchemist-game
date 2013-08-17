@@ -17,7 +17,6 @@ define([
 	return function() {
 		
 		var that = this, score = 0, level = 1, puzzlesSolved = 0;
-		var spotTheDifferencePuzzle, shufflePuzzle;
 		
 		this.setServiceManager = function(m) {
 			this.serviceManager = m;
@@ -39,34 +38,25 @@ define([
 			);
 			
 			// Spot the difference puzzle
-			spotTheDifferencePuzzle = new SpotTheDifferencePuzzle();
 			this.serviceManager.setService(
 				"SpotTheDifferencePuzzle",
-				spotTheDifferencePuzzle
+				new SpotTheDifferencePuzzle()
 			);
-			spotTheDifferencePuzzle.init();
 			
 			// Shuffle puzzle
-			shufflePuzzle = new ShufflePuzzle();
 			this.serviceManager.setService(
 				"ShufflePuzzle",
-				shufflePuzzle
+				new ShufflePuzzle()
 			);
-			shufflePuzzle.init();
 			
+			var html = getHTMLToRender();
 			setTimeout(function() {
-				that.render();
+				that.render(html);
 			}, 1500);
 			
 		};
 		
-		this.render = function() {
-			var html;
-			if (0 === puzzlesSolved || 0 === puzzlesSolved % 2) {
-				html = that.serviceManager.getService("SpotTheDifferencePuzzle").getHTML();
-			} else {
-				html = that.serviceManager.getService("ShufflePuzzle").getHTML();
-			}
+		this.render = function(html) {
 			document.getElementById("wrapper").innerHTML = html;
 		};
 		
@@ -91,6 +81,13 @@ define([
 			level = 1 + Math.floor(puzzlesSolved / 2);
 			this.render();
 		};
+		
+		function getHTMLToRender() {
+			if (0 === puzzlesSolved || 0 === puzzlesSolved % 2) {
+				return that.serviceManager.getService("SpotTheDifferencePuzzle").init().getHTML();
+			}
+			return that.serviceManager.getService("ShufflePuzzle").init().getHTML();
+		}
 		
 	};
 

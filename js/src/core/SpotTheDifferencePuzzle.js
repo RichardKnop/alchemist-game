@@ -11,6 +11,8 @@ define([], function() {
 		};
 		
 		this.init = function() {
+			console.log("Creating a new spot the difference puzzle");
+			
 			this.app = this.serviceManager.getService("Application");
 			this.gen = this.serviceManager.getService("RandomGenerator");
 			
@@ -21,6 +23,8 @@ define([], function() {
 			
 			random = this.gen.generate();
 			remainingTime = this.app.getRemainingTime();
+			
+			return this;
 		};
 		
 		this.getHTML = function() {
