@@ -34,7 +34,7 @@ define([], function() {
 		};
 		
 		this.getHTML = function() {
-			return '<div id="shuffle-puzzle">Shuffle Puzzle</div>';
+			return '<div id="shuffle-puzzle" class="container">Shuffle Puzzle</div>';
 		};
 		
 	};

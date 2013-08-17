@@ -16,7 +16,7 @@ define([
 
 	return function() {
 		
-		var that = this, score = 0, level = 1;
+		var that = this, score = 0, level = 1, puzzlesSolved = 0;
 		var spotTheDifferencePuzzle, shufflePuzzle;
 		
 		this.setServiceManager = function(m) {
@@ -54,12 +54,19 @@ define([
 			);
 			shufflePuzzle.init();
 			
-			this.render();
+			setTimeout(function() {
+				that.render();
+			}, 1500);
 			
 		};
 		
 		this.render = function() {
-			var html =this.serviceManager.getService("SpotTheDifferencePuzzle").getHTML();
+			var html;
+			if (0 === puzzlesSolved || 0 === puzzlesSolved % 2) {
+				html = that.serviceManager.getService("SpotTheDifferencePuzzle").getHTML();
+			} else {
+				html = that.serviceManager.getService("ShufflePuzzle").getHTML();
+			}
 			document.getElementById("wrapper").innerHTML = html;
 		};
 		
@@ -77,6 +84,12 @@ define([
 		
 		this.getRemainingTime = function() {
 			return 300 - (level - 1) * 10;
+		};
+		
+		this.nextPuzzle = function() {
+			puzzlesSolved += 1;
+			level = 1 + Math.floor(puzzlesSolved / 2);
+			this.render();
 		};
 		
 	};

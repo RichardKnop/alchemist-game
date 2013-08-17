@@ -1,5 +1,19 @@
 @import "compass/css3";
 
+body {
+	margin: 0;
+	padding: 0;
+	font: 100.1% sans-serif;
+	background: black;
+	color: white;
+}
 #wrapper {
-	
+	position: relative;
+	.container {
+		width: 1000px;
+		padding: 24px;
+		margin: 0 auto;
+		text-align: center;
+		overflow: hidden;
+	}
 }
