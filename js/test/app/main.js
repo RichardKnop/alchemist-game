@@ -1,9 +1,11 @@
 define([
 	"vendor/domReady",
-	"testSrc/core/RandomCoordinateGeneratorTest"
+	"testSrc/core/RandomCoordinateGeneratorTest",
+	"testSrc/core/GridShufflerTest"
 ], function(
 	domReady,
-	RandomCoordinateGeneratorTest
+	RandomCoordinateGeneratorTest,
+	GridShufflerTest
 ) {
 
 	"use strict";
@@ -13,6 +15,9 @@ define([
 		var testCase;
 		
 		testCase = new RandomCoordinateGeneratorTest();
+		testCase.runTests();
+		
+		testCase = new GridShufflerTest();
 		testCase.runTests();
 		
 	});

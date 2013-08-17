@@ -4,7 +4,7 @@ define([], function() {
 
 	return function() {
 		
-		var maximumX = 10, maximumY = 10;
+		var maximumX, maximumY;
 		var history = [], historyLimit = 5;
 		
 		this.setMaximumX = function(x) {

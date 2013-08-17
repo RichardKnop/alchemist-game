@@ -7,6 +7,8 @@ define([
 	return function() {
 		
 		var generator = new RandomCoordinateGenerator();
+		generator.setMaximumX(10);
+		generator.setMaximumY(10);
 		
 		this.runTests = function() {
 			
