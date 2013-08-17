@@ -7,7 +7,7 @@ define([
 
 	domReady(function() {
 		
-		console.log("let's go!!!");
+		//TODO
 		
 	});
 
