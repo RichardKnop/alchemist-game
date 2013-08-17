@@ -1,13 +1,19 @@
 define([
 	"vendor/domReady",
-	"vendor/hammer"
-], function(domReady) {
+	"testSrc/core/RandomCoordinateGeneratorTest"
+], function(
+	domReady,
+	RandomCoordinateGeneratorTest
+) {
 
 	"use strict";
 
 	domReady(function() {
 		
-		//TODO
+		var testCase;
+		
+		testCase = new RandomCoordinateGeneratorTest();
+		testCase.runTests();
 		
 	});
 

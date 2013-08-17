@@ -1,13 +1,15 @@
 define([
 	"vendor/domReady",
+	"core/RandomCoordinateGenerator",
 	"vendor/hammer"
-], function(domReady) {
+], function(domReady, RandomCoordinateGenerator) {
 
 	"use strict";
 
 	domReady(function() {
 		
-		console.log("let's go!!!");
+		var generator = new RandomCoordinateGenerator();
+		console.log(generator.generate());
 		
 	});
 
