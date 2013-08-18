@@ -38,62 +38,67 @@ define([], function() {
 		};
 		
 		this.getHTML = function() {
-			return '<div id="shuffle-puzzle" class="container">\
-						<h1>Shuffle Puzzle</h1>\
-						<div class="box pull-left">\
-							<div class="ingredient">1</div>\
-							<div class="ingredient">2</div>\
-							<div class="ingredient">3</div>\
-							<div class="ingredient">4</div>\
-							<div class="ingredient">5</div>\
-							<div class="ingredient">6</div>\
-							<div class="ingredient">7</div>\
-							<div class="ingredient">8</div>\
-							<div class="ingredient">9</div>\
-							<div class="ingredient">10</div>\
-							<div class="ingredient">11</div>\
-							<div class="ingredient">12</div>\
-							<div class="ingredient">13</div>\
-							<div class="ingredient">14</div>\
-							<div class="ingredient">15</div>\
-							<div class="ingredient">16</div>\
-							<div class="ingredient">17</div>\
-							<div class="ingredient">18</div>\
-							<div class="ingredient">19</div>\
-							<div class="ingredient">20</div>\
-							<div class="ingredient">21</div>\
-							<div class="ingredient">22</div>\
-							<div class="ingredient">23</div>\
-							<div class="ingredient">24</div>\
-						</div>\
-						<div class="box pull-right">\
-							<div class="ingredient">1</div>\
-							<div class="ingredient">2</div>\
-							<div class="ingredient">3</div>\
-							<div class="ingredient">4</div>\
-							<div class="ingredient">5</div>\
-							<div class="ingredient">6</div>\
-							<div class="ingredient">7</div>\
-							<div class="ingredient">8</div>\
-							<div class="ingredient">9</div>\
-							<div class="ingredient">10</div>\
-							<div class="ingredient">11</div>\
-							<div class="ingredient">12</div>\
-							<div class="ingredient">13</div>\
-							<div class="ingredient">14</div>\
-							<div class="ingredient">15</div>\
-							<div class="ingredient">16</div>\
-							<div class="ingredient">17</div>\
-							<div class="ingredient">18</div>\
-							<div class="ingredient">19</div>\
-							<div class="ingredient">20</div>\
-							<div class="ingredient">21</div>\
-							<div class="ingredient">22</div>\
-							<div class="ingredient">23</div>\
-							<div class="ingredient">24</div>\
-							<div class="ingredient">25</div>\
-						</div>\
-					</div>';
+			var boxWidth = 464;
+			var ingredientsPerRow = 5, ingredientMargin = 5;
+			var usefulBoxWidth = boxWidth;
+			usefulBoxWidth -= (ingredientsPerRow * 2 + 2) * ingredientMargin;
+			var ingredientWidth = Math.floor(usefulBoxWidth / ingredientsPerRow);
+			var boxHeight = boxWidth, ingredientHeight = ingredientWidth;
+			var remainder = usefulBoxWidth - ingredientWidth * ingredientsPerRow;
+			
+			var i, ingredientStyle, left, top;
+			var boxStyle = 'style="';
+			boxStyle += 'width:' + boxWidth + 'px;';
+			boxStyle += 'height:' + boxHeight + 'px;"';
+			boxStyle += '"';
+			var html = '<div id="shuffle-puzzle" class="container">';
+			html += '<h1>Shuffle Puzzle</h1>';
+			html += '<div class="box pull-left" ' + boxStyle + '>';
+
+			left = ingredientMargin * 2 + remainder / 2;
+			top = ingredientMargin * 2 + remainder / 2;
+			for (i = 1; i <= ingredientsPerRow * ingredientsPerRow - 1; i++) {
+				ingredientStyle = 'style="';
+				ingredientStyle += 'width:' + ingredientWidth + 'px;';
+				ingredientStyle += 'height:' + ingredientHeight + 'px;';
+				ingredientStyle += 'left:' + left + 'px;';
+				ingredientStyle += 'top:' + top + 'px;';
+				ingredientStyle += 'line-height:' + ingredientHeight + 'px;';
+				ingredientStyle += '"';
+				html += '<div class="ingredient" ' + ingredientStyle + '>' + i + '</div>';
+				if (0 === i % ingredientsPerRow) {
+					left = ingredientMargin * 2 + remainder / 2;
+					top += ingredientHeight + ingredientMargin * 2;
+				} else {
+					left += ingredientWidth + ingredientMargin * 2;
+				}
+			}
+
+			html += '</div>';
+			html += '<div class="box pull-right" ' + boxStyle + '>';
+			
+			left = ingredientMargin * 2 + remainder / 2;
+			top = ingredientMargin * 2 + remainder / 2;
+			for (i = 1; i <= ingredientsPerRow * ingredientsPerRow; i++) {
+				ingredientStyle = 'style="';
+				ingredientStyle += 'width:' + ingredientWidth + 'px;';
+				ingredientStyle += 'height:' + ingredientHeight + 'px;';
+				ingredientStyle += 'left:' + left + 'px;';
+				ingredientStyle += 'top:' + top + 'px;';
+				ingredientStyle += 'line-height:' + ingredientHeight + 'px;';
+				ingredientStyle += '"';
+				html += '<div class="ingredient" ' + ingredientStyle + '>' + i + '</div>';
+				if (0 === i % ingredientsPerRow) {
+					left = ingredientMargin * 2 + remainder / 2;
+					top += ingredientHeight + ingredientMargin * 2;
+				} else {
+					left += ingredientWidth + ingredientMargin * 2;
+				}
+			}
+			
+			html += '</div>';
+			html += '</div>';
+			return html;
 		};
 		
 	};

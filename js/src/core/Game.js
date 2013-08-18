@@ -60,7 +60,7 @@ define([
 		};
 		
 		this.getRemainingTime = function() {
-			return 300 - (level - 1) * 10;
+			return 60 + (level - 1) * 30;
 		};
 		
 		this.getScore = function() {

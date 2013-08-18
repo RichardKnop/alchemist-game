@@ -3,13 +3,17 @@ define([
 	"testSrc/core/RandomGeneratorTest",
 	"testSrc/core/GridShufflerTest",
 	"testSrc/core/CookieManagerTest",
-	"testSrc/core/GameTest"
+	"testSrc/core/GameTest",
+	"testSrc/core/SpotTheDifferencePuzzleTest",
+	"testSrc/core/ShufflePuzzleTest",
 ], function(
 	domReady,
 	RandomGeneratorTest,
 	GridShufflerTest,
 	CookieManagerTest,
-	GameTest
+	GameTest,
+	SpotTheDifferencePuzzleTest,
+	ShufflePuzzleTest
 ) {
 
 	"use strict";
@@ -28,6 +32,12 @@ define([
 		testCase.runTests();
 		
 		testCase = new GameTest();
+		testCase.runTests();
+		
+		testCase = new SpotTheDifferencePuzzleTest();
+		testCase.runTests();
+		
+		testCase = new ShufflePuzzleTest();
 		testCase.runTests();
 		
 	});
