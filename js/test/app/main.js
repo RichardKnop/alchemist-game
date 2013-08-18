@@ -3,13 +3,13 @@ define([
 	"testSrc/core/RandomGeneratorTest",
 	"testSrc/core/GridShufflerTest",
 	"testSrc/core/CookieManagerTest",
-	"testSrc/core/ApplicationTest"
+	"testSrc/core/GameTest"
 ], function(
 	domReady,
 	RandomGeneratorTest,
 	GridShufflerTest,
 	CookieManagerTest,
-	ApplicationTest
+	GameTest
 ) {
 
 	"use strict";
@@ -27,7 +27,7 @@ define([
 		testCase = new CookieManagerTest();
 		testCase.runTests();
 		
-		testCase = new ApplicationTest();
+		testCase = new GameTest();
 		testCase.runTests();
 		
 	});

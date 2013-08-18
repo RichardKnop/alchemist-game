@@ -16,8 +16,8 @@ define([], function() {
 		};
 		
 		function getHTMLToRender() {
-			var app = that.serviceManager.getService("Application");
-			if (0 === app.getPuzzlesSolved() || 0 === app.getPuzzlesSolved() % 2) {
+			var game = that.serviceManager.getService("Game");
+			if (0 === game.getPuzzlesSolved() || 0 === game.getPuzzlesSolved() % 2) {
 				return that.serviceManager.getService("SpotTheDifferencePuzzle").init().getHTML();
 			}
 			return that.serviceManager.getService("ShufflePuzzle").init().getHTML();

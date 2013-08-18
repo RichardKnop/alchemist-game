@@ -13,13 +13,13 @@ define([], function() {
 		this.init = function() {
 			console.log("Creating a new shuffle puzzle");
 			
-			this.app = this.serviceManager.getService("Application");
+			this.game = this.serviceManager.getService("Game");
 			this.gen = this.serviceManager.getService("RandomGenerator");
 			this.shfl = this.serviceManager.getService("GridShuffler");
 			
-			var maximumX = this.app.getMaximumX();
-			var maximumY = this.app.getMaximumY();
-			var shuffleComplexity = this.app.getShuffleComplexity();
+			var maximumX = this.game.getMaximumX();
+			var maximumY = this.game.getMaximumY();
+			var shuffleComplexity = this.game.getShuffleComplexity();
 			
 			this.gen.setMaximumX(maximumX);
 			this.gen.setMaximumY(maximumY);
@@ -32,7 +32,7 @@ define([], function() {
 			this.shfl.shuffle(shuffleComplexity);
 			
 			grid = this.shfl.getGrid();
-			remainingTime = this.app.getRemainingTime();
+			remainingTime = this.game.getRemainingTime();
 			
 			return this;
 		};

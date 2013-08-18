@@ -13,16 +13,16 @@ define([], function() {
 		this.init = function() {
 			console.log("Creating a new spot the difference puzzle");
 			
-			this.app = this.serviceManager.getService("Application");
+			this.game = this.serviceManager.getService("Game");
 			this.gen = this.serviceManager.getService("RandomGenerator");
 			
-			var maximumX = this.app.getMaximumX();
-			var maximumY = this.app.getMaximumY();
+			var maximumX = this.game.getMaximumX();
+			var maximumY = this.game.getMaximumY();
 			this.gen.setMaximumX(maximumX);
 			this.gen.setMaximumY(maximumY);
 			
 			random = this.gen.generate();
-			remainingTime = this.app.getRemainingTime();
+			remainingTime = this.game.getRemainingTime();
 			
 			return this;
 		};
