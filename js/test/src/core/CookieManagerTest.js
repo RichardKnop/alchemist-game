@@ -8,7 +8,7 @@ define([
 
             var cookieManager = new CookieManager();
 
-            test("Test cookiemanager.save/load", function() {
+            test("Test CookieManager.save/load/remove", function() {
                 
                 strictEqual(cookieManager.load("foo"), null);
                 cookieManager.save("foo", "bar");

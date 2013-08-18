@@ -2,12 +2,14 @@ define([
 	"vendor/domReady",
 	"testSrc/core/RandomGeneratorTest",
 	"testSrc/core/GridShufflerTest",
-	"testSrc/core/CookieManagerTest"
+	"testSrc/core/CookieManagerTest",
+	"testSrc/core/ApplicationTest"
 ], function(
 	domReady,
 	RandomGeneratorTest,
 	GridShufflerTest,
-	CookieManagerTest
+	CookieManagerTest,
+	ApplicationTest
 ) {
 
 	"use strict";
@@ -23,6 +25,9 @@ define([
 		testCase.runTests();
 		
 		testCase = new CookieManagerTest();
+		testCase.runTests();
+		
+		testCase = new ApplicationTest();
 		testCase.runTests();
 		
 	});

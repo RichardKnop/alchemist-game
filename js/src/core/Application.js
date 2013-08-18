@@ -1,5 +1,6 @@
 define([
 	"core/ServiceManager",
+	"core/Renderer",
 	"core/CookieManager",
 	"core/RandomGenerator",
 	"core/GridShuffler",
@@ -7,6 +8,7 @@ define([
 	"core/ShufflePuzzle"
 ], function(
 	ServiceManager,
+	Renderer,
 	CookieManager,
 	RandomGenerator,
 	GridShuffler,
@@ -18,7 +20,7 @@ define([
 
 	return function() {
 		
-		var that = this, score = 0, level = 1, puzzlesSolved = 0;
+		var that = this, score, level, puzzlesSolved;
 		
 		this.setServiceManager = function(m) {
 			this.serviceManager = m;
@@ -39,6 +41,10 @@ define([
 				new GridShuffler()
 			);
 			this.serviceManager.setService(
+				"Renderer",
+				new Renderer()
+			);
+			this.serviceManager.setService(
 				"CookieManager",
 				new CookieManager()
 			);
@@ -55,15 +61,27 @@ define([
 				new ShufflePuzzle()
 			);
 			
-			var html = getHTMLToRender();
 			setTimeout(function() {
-				that.render(html);
+				that.newGame(true);
 			}, 1500);
 			
 		};
 		
-		this.render = function(html) {
-			document.getElementById("wrapper").innerHTML = html;
+		this.newGame = function(render) {
+			score = 0;
+			level = 1;
+			puzzlesSolved = 0;
+			if (true === render) {
+				this.serviceManager.getService("Renderer").render();
+			}
+		};
+		
+		this.nextPuzzle = function(render) {
+			puzzlesSolved += 1;
+			level = 1 + Math.floor(puzzlesSolved / 2);
+			if (true === render) {
+				this.serviceManager.getService("Renderer").render();
+			}
 		};
 		
 		this.getMaximumX = function() {
@@ -82,18 +100,17 @@ define([
 			return 300 - (level - 1) * 10;
 		};
 		
-		this.nextPuzzle = function() {
-			puzzlesSolved += 1;
-			level = 1 + Math.floor(puzzlesSolved / 2);
-			this.render();
+		this.getScore = function() {
+			return score;
 		};
 		
-		function getHTMLToRender() {
-			if (0 === puzzlesSolved || 0 === puzzlesSolved % 2) {
-				return that.serviceManager.getService("SpotTheDifferencePuzzle").init().getHTML();
-			}
-			return that.serviceManager.getService("ShufflePuzzle").init().getHTML();
-		}
+		this.getLevel = function() {
+			return level;
+		};
+		
+		this.getPuzzlesSolved = function() {
+			return puzzlesSolved;
+		};
 		
 	};
 
