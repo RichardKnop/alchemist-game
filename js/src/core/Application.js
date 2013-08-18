@@ -1,11 +1,13 @@
 define([
 	"core/ServiceManager",
+	"core/CookieManager",
 	"core/RandomGenerator",
 	"core/GridShuffler",
 	"core/SpotTheDifferencePuzzle",
 	"core/ShufflePuzzle"
 ], function(
 	ServiceManager,
+	CookieManager,
 	RandomGenerator,
 	GridShuffler,
 	SpotTheDifferencePuzzle,
@@ -35,6 +37,10 @@ define([
 			this.serviceManager.setService(
 				"GridShuffler",
 				new GridShuffler()
+			);
+			this.serviceManager.setService(
+				"CookieManager",
+				new CookieManager()
 			);
 			
 			// Spot the difference puzzle
