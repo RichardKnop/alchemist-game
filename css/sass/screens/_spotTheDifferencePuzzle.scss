@@ -7,4 +7,19 @@
 	h1 {
 		text-align: center;
 	}
+	.box {
+		background: grey;
+		width: 450px;
+		height: 450px;
+		padding: 7px;
+		.ingredient {
+			float: left;
+			width: 80px;
+			height: 80px;
+			background: black;
+			margin: 5px;
+			text-align: center;
+			line-height: 80px;
+		}
+	}
 }
