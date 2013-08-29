@@ -18,7 +18,7 @@ define([
 
 	return function() {
 		
-		var that = this;
+		var that = this, loadingInterval;
 		
 		this.setServiceManager = function(m) {
 			this.serviceManager = m;
@@ -52,11 +52,35 @@ define([
 			);
 			game.init();
 			
-			setTimeout(function() {
+			startLoading(function() {
 				game.startNew(true);
-			}, 1500);
+			});
 			
 		};
+		
+		function startLoading(callback) {
+			var innerIndicator = document.getElementById("inner-indicator");
+			var progressText = document.getElementById("progress-text");
+			var w = 0;
+			var max = 510.0;
+			var increment = 5.1;
+			loadingInterval = setInterval(function() {
+				w += increment;
+				innerIndicator.style.width = Math.round(w) + "px";
+				progressText.innerHTML = Math.floor(w/increment) + "%";
+				if (w >= max) {
+					stopLoading(callback);
+				}
+			}, 25);
+			// TODO preload images etc
+		}
+		
+		function stopLoading(callback) {
+			clearInterval(loadingInterval);
+			if (callback) {
+				callback();
+			}
+		}
 		
 	};
 

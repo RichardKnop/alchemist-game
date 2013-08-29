@@ -4,16 +4,6 @@
 	width: 976px;
 	height: 720px;
 	padding: 24px;
-	h1 {
-		text-align: center;
-	}
-	.box {
-		background: grey;
-		position: relative;
-		.ingredient {
-			position: absolute;
-			background: black;
-			text-align: center;
-		}
-	}
+	background: url('/images/2/background.png') left top no-repeat;
+	background-size: 100% auto;
 }

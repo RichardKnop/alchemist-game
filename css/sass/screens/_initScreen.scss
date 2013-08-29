@@ -1,16 +1,67 @@
 @import "compass/css3";
 
 #init-screen {
+	h1, h2 {
+		color: white;
+		text-align: center;
+		margin: 0;
+	}
+	h1 {
+		font-size: 1.5em;
+		position: fixed;
+		top: 400px;
+		width: 976px;
+		height: 50px;
+		line-height: 50px;
+	}
 	width: 976px;
 	height: 720px;
 	padding: 24px;
-	h1 {
-		text-align: center;
-		width: 400px;
+	background: url('/images/1/background.png') left top no-repeat;
+	background-size: 100% auto;
+	position: relative;
+	#progress-bar {
 		position: fixed;
-		top: 50%;
 		left: 50%;
-		margin-top: -30px;
-		margin-left: -200px;
+		top: 450px;
+		margin-left: -308px;
+		width: 617px;
+		height: 82px;
+		background: url('/images/1/progress-bar.png') left top no-repeat;
+		background-size: 100% auto;
+		z-index: 100;
+	}
+	#blue-diamonds {
+		position: fixed;
+		left: 50%;
+		top: 450px;
+		margin-left: -308px;
+		width: 617px;
+		height: 82px;
+		background: url('/images/1/blue-diamonds.png') left top no-repeat;
+		background-size: 100% auto;
+		z-index: 300;
+	}
+	#progress-indicator {
+		width: 510px;
+		height: 20px;
+		position: fixed;
+		left: 50%;
+		top: 482px;
+		margin-left: -255px;
+		z-index: 200;
+		#inner-indicator {
+			width: 0;
+			height: 20px;
+			background: #180909;
+		}
+		h2 {
+			width: 510px;
+			height: 20px;
+			line-height: 20px;
+			font-size: .9em;
+			font-weight: normal;
+			margin-top: -20px
+		}
 	}
 }

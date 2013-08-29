@@ -4,11 +4,15 @@ define([], function() {
 
 	return function() {
 		
-		var maximumX, maximumY;
+		var maximum, maximumX, maximumY;
 		var history = [], historyLimit = 5;
 		
 		this.setServiceManager = function(m) {
 			this.serviceManager = m;
+		};
+		
+		this.setMaximum = function(m) {
+			maximum = m;
 		};
 		
 		this.setMaximumX = function(x) {
@@ -23,7 +27,11 @@ define([], function() {
 			historyLimit = l;
 		};
 		
-		this.generate = function() {
+		this.generateInteger = function() {
+			return getRandomInt(1, maximum);
+		};
+		
+		this.generateCoordinate = function() {
 			var c = {}, keepGoing = true, found;
 			
 			while (true === keepGoing) {

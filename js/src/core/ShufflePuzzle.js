@@ -23,7 +23,7 @@ define([], function() {
 			
 			this.gen.setMaximumX(maximumX);
 			this.gen.setMaximumY(maximumY);
-			var random = this.gen.generate();
+			var random = this.gen.generateCoordinate();
 			
 			this.shfl.setMaximumX(maximumX);
 			this.shfl.setMaximumY(maximumY);
