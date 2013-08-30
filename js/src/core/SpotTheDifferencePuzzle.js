@@ -4,7 +4,29 @@ define([], function() {
 
 	return function() {
 		
-		var that = this, random, remainingTime;
+		var that = this, random, remainingTime,
+			items = [
+				"jar",
+				"symbol",
+				"hawk-egg",
+				"root",
+				"hourglass",
+				"herbs",
+				"potion",
+				"globe",
+				"mineral-stone",
+				"butterfly",
+				"bird-skull",
+				"amulet",
+				"ogre-meat",
+				"claw",
+				"flower",
+				"vampiric-urne",
+				"blue-crystal",
+				"mushroom",
+				"knife",
+				"bag"
+			];
 		
 		this.setServiceManager = function(m) {
 			this.serviceManager = m;
@@ -25,8 +47,11 @@ define([], function() {
 		};
 		
 		this.getHTML = function() {
-			var html = '<div id="spot-the-difference-puzzle" class="container">';
-			// TODO
+			var html, i;
+			html = '<div id="spot-the-difference-puzzle" class="container">';
+			for (i = 0; i < items.length; i += 1) {
+				html += '<div id="' + items[i] + '" class="item"></div>';
+			}
 			html += "</div>";
 			return html;
 		};

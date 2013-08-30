@@ -52,9 +52,9 @@ define([
 			);
 			game.init();
 			
-			startLoading(function() {
+			//startLoading(function() {
 				game.startNew(true);
-			});
+			//});
 			
 		};
 		

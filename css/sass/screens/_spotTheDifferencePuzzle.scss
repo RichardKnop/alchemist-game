@@ -6,4 +6,121 @@
 	padding: 24px;
 	background: url('/images/2/background.png') left top no-repeat;
 	background-size: 100% auto;
+	position: relative;
+	.item {
+		position: absolute;
+		background-position: left top;
+		background-repeat: no-repeat;
+		background-size: 100% auto;
+		width: 104px;
+		height: 73px;
+	}
+	#jar {
+		background-image: url('/images/2/items/jar.png');
+		left: 890px;	
+		top: 94px;
+	}
+	#symbol {
+		background-image: url('/images/2/items/symbol.png');
+		left: 856px;	
+		top: 215px;
+	}
+	#hawk-egg {
+		background-image: url('/images/2/items/hawk-egg.png');
+		left: 551px;	
+		top: 123px;
+	}
+	#root {
+		background-image: url('/images/2/items/root.png');
+		left: 651px;	
+		top: 123px;
+	}
+	#hourglass {
+		background-image: url('/images/2/items/hourglass.png');
+		left: 734px;	
+		top: 113px;
+	}
+	#herbs {
+		background-image: url('/images/2/items/herbs.png');
+		left: 566px;	
+		top: 213px;
+	}
+	#potion {
+		background-image: url('/images/2/items/potion.png');
+		left: 664px;	
+		top: 187px;
+	}
+	#globe {
+		background-image: url('/images/2/items/globe.png');
+		left: 736px;	
+		top: 190px;
+	}
+	#mineral-stone {
+		background-image: url('/images/2/items/mineral-stone.png');
+		left: 563px;	
+		top: 290px;
+	}
+	#butterfly {
+		background-image: url('/images/2/items/butterfly.png');
+		left: 654px;	
+		top: 298px;
+	}
+	#bird-skull {
+		background-image: url('/images/2/items/bird-skull.png');
+		left: 736px;	
+		top: 288px;
+	}
+	#amulet {
+		width: 227px;
+		height: 96px;
+		background-image: url('/images/2/items/amulet.png');
+		left: 536px;	
+		top: 376px;
+	}
+	#ogre-meat {
+		background-image: url('/images/2/items/ogre-meat.png');
+		left: 720px;	
+		top: 379px;
+	}
+	#claw {
+		width: 79px;
+		height: 53px;
+		background-image: url('/images/2/items/claw.png');
+		left: 580px;	
+		top: 476px;
+	}
+	#flower {
+		width: 67px;
+		height: 81px;
+		background-image: url('/images/2/items/flower.png');
+		left: 720px;	
+		top: 498px;
+	}
+	#vampiric-urne {
+		background-image: url('/images/2/items/vampiric-urne.png');
+		left: 890px;	
+		top: 498px;
+	}
+	#blue-crystal {
+		background-image: url('/images/2/items/blue-crystal.png');
+		left: 538px;	
+		top: 615px;
+	}
+	#mushroom {
+		background-image: url('/images/2/items/mushroom.png');
+		left: 640px;	
+		top: 605px;
+	}
+	#knife {
+		width: 130px;
+		height: 43px;
+		background-image: url('/images/2/items/knife.png');
+		left: 735px;	
+		top: 646px;
+	}
+	#bag {
+		background-image: url('/images/2/items/bag.png');
+		left: 870px;	
+		top: 608px;
+	}
 }
