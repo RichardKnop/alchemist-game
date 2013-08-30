@@ -49,6 +49,9 @@ define([], function() {
 		this.getHTML = function() {
 			var html, i;
 			html = '<div id="spot-the-difference-puzzle" class="container">';
+			html += '<div id="level">LEVEL 1</div>';
+			html += '<div id="time">03:49</div>';
+			html += '<div id="score">SCORE: 0</div>';
 			for (i = 0; i < items.length; i += 1) {
 				html += '<div id="' + items[i] + '" class="item"></div>';
 			}
