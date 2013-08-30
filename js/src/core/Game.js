@@ -10,7 +10,7 @@ define([
 
 	return function() {
 		
-		var that = this, score, level, puzzlesSolved;
+		var that = this, baseTime = 60, score, level, puzzlesSolved;
 		
 		this.setServiceManager = function(m) {
 			this.serviceManager = m;
@@ -59,8 +59,19 @@ define([
 			return 3 + level * 2;
 		};
 		
+		this.setBaseTime = function(t) {
+			baseTime = t;
+		};
+		
 		this.getRemainingTime = function() {
-			return 60 + (level - 1) * 30;
+			var t, s, min, sec;
+			t = baseTime + (level - 1) * 30;
+			min = Math.floor(t / 60);
+			s = min < 10 ? "0" + min : min;
+			s += ":";
+			sec = t % 60;
+			s += sec < 10 ? "0" + sec : sec;
+			return s;
 		};
 		
 		this.getScore = function() {

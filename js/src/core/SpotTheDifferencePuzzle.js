@@ -47,11 +47,14 @@ define([], function() {
 		};
 		
 		this.getHTML = function() {
-			var html, i;
+			var html, i, level, score;
+			level = this.serviceManager.getService("Game").getLevel();
+			remainingTime = this.serviceManager.getService("Game").getRemainingTime();
+			score = this.serviceManager.getService("Game").getScore();;
 			html = '<div id="spot-the-difference-puzzle" class="container">';
-			html += '<div id="level">LEVEL 1</div>';
-			html += '<div id="time">03:49</div>';
-			html += '<div id="score">SCORE: 0</div>';
+			html += '<div id="level">LEVEL ' + level + '</div>';
+			html += '<div id="time">' + remainingTime + '</div>';
+			html += '<div id="score">SCORE: ' + score + '</div>';
 			for (i = 0; i < items.length; i += 1) {
 				html += '<div id="' + items[i] + '" class="item"></div>';
 			}
