@@ -5,8 +5,9 @@ define([], function () {
 
 	return function () {
 
-		var maximumX, maximumY,
-			grid, emptySpace, previousMovementTag, i;
+		var maximumX, maximumY, shuffleComplexity, 
+			grid, emptySpace, previousMovementTag, i,
+			itemMargin;
 
 		function logPointMovement(from, to) {
 			console.log("[" + from.x + " ; " + from.y + "] => [" + to.x + " ; " + to.y + "]");
@@ -108,12 +109,111 @@ define([], function () {
 			return movements[Math.floor(Math.random() * movements.length)];
 		}
 
-		function moveEmptySpace() {
+		function animation(el, isHorizontal, from, to, callback) {
+			var start = true === isHorizontal ? from.x : from.y,
+				stop = true === isHorizontal ? to.x : to.y,
+				intervalId, diff;
+			intervalId = setInterval(function () {
+				diff = Math.abs(stop - start);
+				if (stop < start) {
+					if (diff < 4) {
+						start -= diff;
+					} else {
+						start -= 4;
+					}
+				} else {
+					if (diff < 4) {
+						start += diff;
+					} else {
+						start += 4;
+					}
+				}
+				if (true === isHorizontal) {
+					el.style.left = start + 'px';
+				} else {
+					el.style.top = start + 'px';
+				}
+				if (start === stop) {
+					clearInterval(intervalId);
+					if (callback) {
+						callback();
+					}
+				}
+			}, 1);
+		}
+
+		function moveEmptySpace(animate) {
+			/*jslint browser:true */
+			var itemToAnimateId,
+				itemToAnimate,
+				isHorizontal,
+				callback,
+				animateFrom,
+				animateTo,
+				newAnimatedItemId;
+			if (true === animate) {
+				if (null === itemMargin) {
+					itemMargin = document.getElementById("item-2-1").offsetLeft 
+								- document.getElementById("item-1-1").offsetLeft 
+								- document.getElementById("item-2-1").offsetWidth;
+				}
+				newAnimatedItemId = "item-" + emptySpace.x + "-" + emptySpace.y;
+			}
+
+			shuffleComplexity -= 1;
 			if (undefined === emptySpace) {
 				throw "You have to call setEmptySpace first";
 			}
 			var movement = getEmptySpaceMovement();
 			movement();
+
+			// animate
+			if (true === animate) {
+				itemToAnimateId = "item-" + emptySpace.x + "-" + emptySpace.y ;
+				itemToAnimate = document.getElementById(itemToAnimateId);
+				isHorizontal = "left" === previousMovementTag || "right" === previousMovementTag;
+				animateFrom = {
+					x: itemToAnimate.offsetLeft,
+					y: itemToAnimate.offsetTop
+				};
+				if ("left" === previousMovementTag) {
+					animateTo = {
+						x: animateFrom.x + itemToAnimate.offsetWidth + itemMargin,
+						y: animateFrom.y
+					};
+				}
+				if ("right" === previousMovementTag) {
+					animateTo = {
+						x: animateFrom.x - itemToAnimate.offsetWidth - itemMargin,
+						y: animateFrom.y
+					};
+				}
+				if ("up" === previousMovementTag) {
+					animateTo = {
+						x: animateFrom.x,
+						y: animateFrom.y + itemToAnimate.offsetHeight + itemMargin
+					};
+				}
+				if ("down" === previousMovementTag) {
+					animateTo = {
+						x: animateFrom.x,
+						y: animateFrom.y - itemToAnimate.offsetHeight - itemMargin
+					};
+				}
+				callback = function () {
+					itemToAnimate.id = newAnimatedItemId;
+					if (shuffleComplexity > 0) {
+						//TODO - fix in safari
+						moveEmptySpace(animate);
+					}
+				};
+				animation(itemToAnimate, isHorizontal, animateFrom, animateTo, callback);
+			} else {
+				if (shuffleComplexity > 0) {
+					moveEmptySpace(animate);
+				}
+			}
+
 			console.log("new empty space = [" + emptySpace.x + " ; " + emptySpace.y + "]");
 		}
 
@@ -174,11 +274,10 @@ define([], function () {
 			return emptySpace;
 		};
 
-		this.shuffle = function (n) {
-			while (n > 0) {
-				moveEmptySpace();
-				n -= 1;
-			}
+		this.shuffle = function (n, animate) {
+			itemMargin = null;
+			shuffleComplexity = n;
+			moveEmptySpace(animate);
 		};
 
 	};

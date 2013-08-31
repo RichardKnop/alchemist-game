@@ -5,7 +5,43 @@ define([], function () {
 
 	return function () {
 
-		var that = this, grid;
+		var that = this,
+			grid,
+			items = [
+				"jar",
+				"symbol",
+				"hawk-egg",
+				"root",
+				"hourglass",
+				"herbs",
+				"potion",
+				"globe",
+				"mineral-stone",
+				"butterfly",
+				"bird-skull",
+				"amulet",
+				"ogre-meat",
+				"claw",
+				"flower",
+				"vampiric-urne",
+				"blue-crystal",
+				"mushroom",
+				"knife",
+				"bag",
+				"key",
+				"books",
+				"ring",
+				"scroll"
+			],
+			chosenItems,
+			i;
+
+		function generateId(pos, len) {
+			var side = Math.sqrt(len + 1),
+				y = (3 - Math.floor((pos - 1) / side)),
+				x = 0 === pos % side ? side : pos % side;
+			return "item-" + x + "-" + y;
+		}
 
 		this.setServiceManager = function (m) {
 			this.serviceManager = m;
@@ -13,9 +49,7 @@ define([], function () {
 
 		this.init = function () {
 			var maximumX,
-				maximumY,
-				shuffleComplexity,
-				random;
+				maximumY;
 
 			console.log("Creating a new shuffle puzzle");
 
@@ -25,27 +59,28 @@ define([], function () {
 
 			maximumX = this.game.getMaximumX();
 			maximumY = this.game.getMaximumY();
-			shuffleComplexity = this.game.getShuffleComplexity();
 
 			this.gen.setMaximumX(maximumX);
 			this.gen.setMaximumY(maximumY);
-			random = this.gen.generateCoordinate();
 
 			this.shfl.setMaximumX(maximumX);
 			this.shfl.setMaximumY(maximumY);
 			this.shfl.init();
-			this.shfl.setEmptySpace(random.x, random.y);
-			this.shfl.shuffle(shuffleComplexity);
-
-			grid = this.shfl.getGrid();
+			this.shfl.setEmptySpace(maximumX, 1);
+			
+			chosenItems = [];
+			items = this.gen.shuffleArray(items);
+			for (i = 0; i < maximumX * maximumY - 1; i += 1) {
+				chosenItems.push(items[i]);
+			}
 
 			return this;
 		};
 
 		this.getHTML = function () {
 			var boxWidth = 332,
-				ingredientsPerRow = 5,
-				ingredientMargin = 5,
+				ingredientsPerRow = this.game.getMaximumX(),
+				ingredientMargin = 4,
 				usefulBoxWidth = boxWidth - (ingredientsPerRow * 2 + 2) * ingredientMargin,
 				ingredientWidth = Math.floor(usefulBoxWidth / ingredientsPerRow),
 				boxHeight = boxWidth,
@@ -79,15 +114,14 @@ define([], function () {
 
 			left = ingredientMargin * 2 + remainder / 2;
 			top = ingredientMargin * 2 + remainder / 2;
-			for (i = 1; i <= ingredientsPerRow * ingredientsPerRow - 1; i += 1) {
+			for (i = 1; i <= chosenItems.length; i += 1) {
 				ingredientStyle = 'style="';
 				ingredientStyle += 'width:' + ingredientWidth + 'px;';
 				ingredientStyle += 'height:' + ingredientHeight + 'px;';
 				ingredientStyle += 'left:' + left + 'px;';
 				ingredientStyle += 'top:' + top + 'px;';
-				ingredientStyle += 'line-height:' + ingredientHeight + 'px;';
 				ingredientStyle += '"';
-				html += '<div class="ingredient" ' + ingredientStyle + '>' + i + '</div>';
+				html += '<div id="' + generateId(i, chosenItems.length) + '" class="item ' + chosenItems[i - 1] + '" ' + ingredientStyle + '></div>';
 				if (0 === i % ingredientsPerRow) {
 					left = ingredientMargin * 2 + remainder / 2;
 					top += ingredientHeight + ingredientMargin * 2;
@@ -101,15 +135,14 @@ define([], function () {
 
 			left = ingredientMargin * 2 + remainder / 2;
 			top = ingredientMargin * 2 + remainder / 2;
-			for (i = 1; i <= ingredientsPerRow * ingredientsPerRow; i += 1) {
+			for (i = 1; i <= chosenItems.length; i += 1) {
 				ingredientStyle = 'style="';
 				ingredientStyle += 'width:' + ingredientWidth + 'px;';
 				ingredientStyle += 'height:' + ingredientHeight + 'px;';
 				ingredientStyle += 'left:' + left + 'px;';
 				ingredientStyle += 'top:' + top + 'px;';
-				ingredientStyle += 'line-height:' + ingredientHeight + 'px;';
 				ingredientStyle += '"';
-				html += '<div class="ingredient" ' + ingredientStyle + '>' + i + '</div>';
+				html += '<div class="item ' + chosenItems[i - 1] + '" ' + ingredientStyle + '></div>';
 				if (0 === i % ingredientsPerRow) {
 					left = ingredientMargin * 2 + remainder / 2;
 					top += ingredientHeight + ingredientMargin * 2;
@@ -124,7 +157,11 @@ define([], function () {
 		};
 
 		this.afterRender = function () {
-			//TODO
+			var shuffleComplexity = this.game.getShuffleComplexity();
+			setTimeout(function () {
+				that.shfl.shuffle(shuffleComplexity, true);
+			}, 250);
+			//grid = this.shfl.getGrid();
 		};
 
 	};
