@@ -150,7 +150,7 @@ define(["vendor/rAF"], function () {
 			anmationId = requestAnimationFrame(animation);
 		};
 
-		this.moveEmptySpace = function (animate) {
+		this.moveEmptySpace = function (animate, finalCallback) {
 			/*jslint browser:true */
 			var itemToAnimateId,
 				itemToAnimate,
@@ -208,7 +208,9 @@ define(["vendor/rAF"], function () {
 				callback = function () {
 					itemToAnimate.id = newAnimatedItemId;
 					if (shuffleComplexity > 0) {
-						that.moveEmptySpace(animate);
+						that.moveEmptySpace(animate, finalCallback);
+					} else {
+						finalCallback();
 					}
 				};
 				that.animateItem(
@@ -285,10 +287,10 @@ define(["vendor/rAF"], function () {
 			return emptySpace;
 		};
 
-		this.shuffle = function (n, animate) {
+		this.shuffle = function (n, animate, finalCallback) {
 			canAnimate = true;
 			shuffleComplexity = n;
-			this.moveEmptySpace(animate);
+			this.moveEmptySpace(animate, finalCallback);
 		};
 
 	};

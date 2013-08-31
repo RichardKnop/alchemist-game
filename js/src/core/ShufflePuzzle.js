@@ -215,7 +215,7 @@ define([], function () {
 			var items, i, isHorizontal, from, to, callback,
 				shuffleComplexity = this.game.getShuffleComplexity();
 			setTimeout(function () {
-				that.shfl.shuffle(shuffleComplexity, true);
+				that.shfl.shuffle(shuffleComplexity, true, startCountingDown);
 			}, 250);
 			items = document.getElementsByClassName("item");
 			for (i = 0; i < items.length; i += 1) {
@@ -253,7 +253,6 @@ define([], function () {
 					}
 				}, false);
 			}
-			startCountingDown();
 		};
 		
 		this.destruct = function () {
