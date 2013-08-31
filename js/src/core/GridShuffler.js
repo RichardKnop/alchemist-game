@@ -162,6 +162,7 @@ define(["vendor/rAF"], function () {
 				itemMargin;
 			if (true === animate) {
 				newAnimatedItemId = "item-" + emptySpace.x + "-" + emptySpace.y;
+				console.log(newAnimatedItemId);
 			}
 
 			shuffleComplexity -= 1;

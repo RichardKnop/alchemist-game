@@ -6,6 +6,8 @@ define([], function () {
 	return function () {
 
 		var that = this,
+			maximumX,
+			maximumY,
 			grid,
 			itemMargin = 4,
 			animationSpeed = 8,
@@ -40,7 +42,7 @@ define([], function () {
 
 		function generateId(pos, len) {
 			var side = Math.sqrt(len + 1),
-				y = (3 - Math.floor((pos - 1) / side)),
+				y = (maximumX - Math.floor((pos - 1) / side)),
 				x = 0 === pos % side ? side : pos % side;
 			return "item-" + x + "-" + y;
 		}
@@ -96,9 +98,6 @@ define([], function () {
 		};
 
 		this.init = function () {
-			var maximumX,
-				maximumY;
-
 			console.log("Creating a new shuffle puzzle");
 
 			this.game = this.serviceManager.getService("Game");

@@ -87,7 +87,9 @@ define([
 				"/images/3/items/key.png",
 				"/images/3/items/ring.png",
 				"/images/3/items/books.png"
-			];
+			],
+			soundtrack,
+			sounds;
 
 		function stopLoading(callback) {
 			clearInterval(loadingInterval);
@@ -118,6 +120,17 @@ define([
 				img = new Image();
 				img.src = imagesToPreload[i];
 			}
+		}
+
+		function startSoundtrack() {
+			soundtrack.play();
+			soundtrack.addEventListener('ended', function () {
+				var audio = this;
+				setTimeout(function () {
+					audio.currentTime = 0;
+					audio.play();
+				}, 5000);
+			}, false);
 		}
 
 		this.setServiceManager = function (m) {
@@ -152,8 +165,12 @@ define([
 			);
 			game.init();
 
+			soundtrack = document.getElementById("soundtrack");
+			sounds = document.getElementById("sounds");
+
 			startLoading(function() {
 				game.startNew(true);
+				startSoundtrack();
 			});
 
 		};
