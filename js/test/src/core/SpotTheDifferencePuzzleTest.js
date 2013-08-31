@@ -1,17 +1,20 @@
+/*global define, test, strictEqual*/
 define([
     'core/SpotTheDifferencePuzzle'
-], function(SpotTheDifferencePuzzle) {
+], function (SpotTheDifferencePuzzle) {
 
-    return function() {
-		
-        this.runTests = function() {
+	"use strict";
+
+    return function () {
+
+        this.runTests = function () {
 
             var puzzle = new SpotTheDifferencePuzzle();
 
             //TODO
 
         };
-		
+
     };
 
 });

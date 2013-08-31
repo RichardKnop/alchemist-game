@@ -1,26 +1,14 @@
-define([], function() {
+/*global define, escape*/
+define([], function () {
 
-    return function() {
+	"use strict";
+
+    return function () {
 
         var that = this;
 
-        this.setServiceManager = function(manager) {
-            this.serviceManager = manager;
-        };
-
-        this.save = function(name, value) {
-            setCookie(name, value, getExpirationDate());
-        };
-
-        this.load = function(name) {
-            return getCookie(name);
-        };
-
-        this.remove = function(name) {
-            deleteCookie(name);
-        };
-
         function setCookie(name, value, expires, path, domain) {
+			/*jslint browser:true */
             var cookie = name + "=" + escape(value) + ";";
             if (expires) {
                 // If expires is an instance of Date
@@ -30,7 +18,7 @@ define([], function() {
                         expires = new Date();
                     }
                 } else {
-                    expires = new Date(new Date().getTime() + parseInt(expires) * 1000 * 60 * 60 * 24);
+                    expires = new Date(new Date().getTime() + parseInt(expires, 10) * 1000 * 60 * 60 * 24);
                 }
                 cookie += "expires=" + expires.toGMTString() + ";";
             }
@@ -44,8 +32,9 @@ define([], function() {
         }
 
         function getCookie(name) {
-            var regexp = new RegExp("(?:^" + name + "|;\\s*" + name + ")=(.*?)(?:;|$)", "g");
-            var result = regexp.exec(document.cookie);
+			/*jslint browser:true */
+            var regexp = new RegExp("(?:^" + name + "|;\\s*" + name + ")=(.*?)(?:;|$)", "g"),
+				result = regexp.exec(document.cookie);
             return (result === null) ? null : result[1];
         }
 
@@ -59,6 +48,22 @@ define([], function() {
                 setCookie(name, "", -1, path, domain);
             }
         }
+
+        this.setServiceManager = function (manager) {
+            this.serviceManager = manager;
+        };
+
+        this.save = function (name, value) {
+            setCookie(name, value, getExpirationDate());
+        };
+
+        this.load = function (name) {
+            return getCookie(name);
+        };
+
+        this.remove = function (name) {
+            deleteCookie(name);
+        };
 
     };
 

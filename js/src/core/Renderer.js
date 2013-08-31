@@ -1,28 +1,29 @@
-define([], function() {
+/*global define*/
+define([], function () {
 
 	"use strict";
 
-	return function() {
-		
+	return function () {
+
 		var that = this;
-		
-		this.setServiceManager = function(m) {
+
+		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
-		
-		this.render = function() {
-			var html = getHTMLToRender();
-			document.getElementById("wrapper").innerHTML = html;
+
+		this.render = function (puzzle) {
+			/*jslint browser:true */
+			document.getElementById("wrapper").innerHTML = puzzle.getHTML();
 		};
-		
-		function getHTMLToRender() {
-			var game = that.serviceManager.getService("Game");
-			if (0 === game.getPuzzlesSolved() || 0 === game.getPuzzlesSolved() % 2) {
-				return that.serviceManager.getService("SpotTheDifferencePuzzle").init().getHTML();
-			}
-			return that.serviceManager.getService("ShufflePuzzle").init().getHTML();
-		}
-		
+
+		this.updateTime = function () {
+			/*jslint browser:true */
+			var t, f;
+			t = this.serviceManager.getService("Game").getRemainingTime();
+			f = this.serviceManager.getService("Game").formatTime(t);
+			document.getElementById("time").innerHTML = f;
+		};
+
 	};
 
 });

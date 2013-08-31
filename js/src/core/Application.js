@@ -1,3 +1,4 @@
+/*global define*/
 define([
 	"core/ServiceManager",
 	"core/Renderer",
@@ -5,7 +6,7 @@ define([
 	"core/RandomGenerator",
 	"core/GridShuffler",
 	"core/Game"
-], function(
+], function (
 	ServiceManager,
 	Renderer,
 	CookieManager,
@@ -16,19 +17,44 @@ define([
 
 	"use strict";
 
-	return function() {
-		
+	return function () {
+
 		var that = this, loadingInterval;
-		
-		this.setServiceManager = function(m) {
+
+		function stopLoading(callback) {
+			clearInterval(loadingInterval);
+			if (callback) {
+				callback();
+			}
+		}
+
+		function startLoading(callback) {
+			/*jslint browser:true */
+			var innerIndicator = document.getElementById("inner-indicator"),
+				progressText = document.getElementById("progress-text"),
+				w = 0,
+				max = 510.0,
+				increment = 5.1;
+			loadingInterval = setInterval(function () {
+				w += increment;
+				innerIndicator.style.width = Math.round(w) + "px";
+				progressText.innerHTML = Math.floor(w / increment) + "%";
+				if (w >= max) {
+					stopLoading(callback);
+				}
+			}, 25);
+			// TODO preload images etc
+		}
+
+		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
-		
-		this.run = function() {
-			
+
+		this.run = function () {
+
 			this.setServiceManager(new ServiceManager());
 			this.serviceManager.setService("Application", that);
-			
+
 			this.serviceManager.setService(
 				"RandomGenerator",
 				new RandomGenerator()
@@ -51,37 +77,13 @@ define([
 				game
 			);
 			game.init();
-			
-			//startLoading(function() {
+
+			startLoading(function() {
 				game.startNew(true);
-			//});
-			
+			});
+
 		};
-		
-		function startLoading(callback) {
-			var innerIndicator = document.getElementById("inner-indicator");
-			var progressText = document.getElementById("progress-text");
-			var w = 0;
-			var max = 510.0;
-			var increment = 5.1;
-			loadingInterval = setInterval(function() {
-				w += increment;
-				innerIndicator.style.width = Math.round(w) + "px";
-				progressText.innerHTML = Math.floor(w/increment) + "%";
-				if (w >= max) {
-					stopLoading(callback);
-				}
-			}, 25);
-			// TODO preload images etc
-		}
-		
-		function stopLoading(callback) {
-			clearInterval(loadingInterval);
-			if (callback) {
-				callback();
-			}
-		}
-		
+
 	};
 
 });

@@ -1,10 +1,12 @@
-define([], function() {
+/*global define*/
+define([], function () {
 
 	"use strict";
 
-	return function() {
-		
-		var that = this, random, remainingTime,
+	return function () {
+
+		var that = this,
+			random,
 			items = [
 				"jar",
 				"symbol",
@@ -27,33 +29,39 @@ define([], function() {
 				"knife",
 				"bag"
 			];
-		
-		this.setServiceManager = function(m) {
+
+		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
-		
-		this.init = function() {
+
+		this.init = function () {
 			console.log("Creating a new spot the difference puzzle");
-			
+
 			this.game = this.serviceManager.getService("Game");
 			this.gen = this.serviceManager.getService("RandomGenerator");
-			
+
 			this.gen.setMaximum(10); // TODO
-			
+
 			random = this.gen.generateInteger();
-			remainingTime = this.game.getRemainingTime();
-			
+
 			return this;
 		};
-		
-		this.getHTML = function() {
-			var html, i, level, score;
+
+		this.getHTML = function () {
+			var html,
+				i,
+				level,
+				score,
+				remainingTime,
+				formattedRemainingTime;
+
 			level = this.serviceManager.getService("Game").getLevel();
 			remainingTime = this.serviceManager.getService("Game").getRemainingTime();
-			score = this.serviceManager.getService("Game").getScore();;
+			formattedRemainingTime = this.serviceManager.getService("Game").formatTime(remainingTime);
+			score = this.serviceManager.getService("Game").getScore();
 			html = '<div id="spot-the-difference-puzzle" class="container">';
 			html += '<div id="level">LEVEL ' + level + '</div>';
-			html += '<div id="time">' + remainingTime + '</div>';
+			html += '<div id="time">' + formattedRemainingTime + '</div>';
 			html += '<div id="score">SCORE: ' + score + '</div>';
 			for (i = 0; i < items.length; i += 1) {
 				html += '<div id="' + items[i] + '" class="item"></div>';
@@ -61,7 +69,7 @@ define([], function() {
 			html += "</div>";
 			return html;
 		};
-		
+
 	};
 
 });
