@@ -48,6 +48,9 @@ define([
 		};
 
 		this.initPuzzle = function () {
+			if (undefined !== currentPuzzle) {
+				currentPuzzle.destruct();
+			}
 			if (0 === puzzlesSolved || 0 === puzzlesSolved % 2) {
 				currentPuzzle = this.serviceManager.getService("SpotTheDifferencePuzzle").init();
 			} else {
@@ -64,8 +67,7 @@ define([
 
 			if (true === render) {
 				this.serviceManager.getService("Renderer").render(currentPuzzle);
-				currentPuzzle.afterRender();
-				startCountingDown();
+				currentPuzzle.afterRender(startCountingDown);
 			}
 		};
 
@@ -78,8 +80,8 @@ define([
 			this.initPuzzle();
 			if (true === render) {
 				this.serviceManager.getService("Renderer").render(currentPuzzle);
-				currentPuzzle.afterRender();
-				startCountingDown();
+				clearInterval(remainingTimeInterval);
+				currentPuzzle.afterRender(startCountingDown);
 			}
 		};
 

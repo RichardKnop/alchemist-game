@@ -90,7 +90,7 @@ define([], function () {
 			return html;
 		};
 
-		this.afterRender = function () {
+		this.afterRender = function (startCountingDown) {
 			/*jslint browser:true */
 			var toBeMoved, all, i, el, bgImg;
 
@@ -132,7 +132,12 @@ define([], function () {
 					el = all[i];
 					el.className += " animated flash";
 				}
+				startCountingDown();
 			}, 250);
+		};
+
+		this.destruct = function () {
+			//TODO
 		};
 
 	};

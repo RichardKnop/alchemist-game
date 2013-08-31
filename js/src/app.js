@@ -4,6 +4,9 @@ requirejs.config({
 	"shim": {
 		"vendor/hammer": {
 			exports: "Hammer"
+		},
+		"vendor/rAF": {
+			exports: "requestAnimationFrame"
 		}
 	}
 });

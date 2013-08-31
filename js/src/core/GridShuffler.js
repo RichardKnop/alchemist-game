@@ -1,13 +1,12 @@
 /*global define*/
-define([], function () {
+define(["vendor/rAF"], function () {
 
 	"use strict";
 
 	return function () {
 
-		var maximumX, maximumY, shuffleComplexity, 
-			grid, emptySpace, previousMovementTag, i,
-			itemMargin;
+		var that = this, maximumX, maximumY, shuffleComplexity, 
+			grid, emptySpace, previousMovementTag, i, canAnimate = false;
 
 		function logPointMovement(from, to) {
 			console.log("[" + from.x + " ; " + from.y + "] => [" + to.x + " ; " + to.y + "]");
@@ -109,23 +108,28 @@ define([], function () {
 			return movements[Math.floor(Math.random() * movements.length)];
 		}
 
-		function animation(el, isHorizontal, from, to, callback) {
+		this.canAnimate = function () {
+			return canAnimate;
+		};
+
+		this.animateItem = function (el, isHorizontal, from, to, speed, callback) {
 			var start = true === isHorizontal ? from.x : from.y,
 				stop = true === isHorizontal ? to.x : to.y,
-				intervalId, diff;
-			intervalId = setInterval(function () {
+				anmationId, diff, animation;
+			canAnimate = false;
+			animation = function () {
 				diff = Math.abs(stop - start);
 				if (stop < start) {
-					if (diff < 4) {
+					if (diff < speed) {
 						start -= diff;
 					} else {
-						start -= 4;
+						start -= speed;
 					}
 				} else {
-					if (diff < 4) {
+					if (diff < speed) {
 						start += diff;
 					} else {
-						start += 4;
+						start += speed;
 					}
 				}
 				if (true === isHorizontal) {
@@ -134,15 +138,19 @@ define([], function () {
 					el.style.top = start + 'px';
 				}
 				if (start === stop) {
-					clearInterval(intervalId);
+					cancelAnimationFrame(anmationId);
 					if (callback) {
 						callback();
 					}
+					canAnimate = true;
+				} else {
+					requestAnimationFrame(animation);
 				}
-			}, 1);
-		}
+			};
+			anmationId = requestAnimationFrame(animation);
+		};
 
-		function moveEmptySpace(animate) {
+		this.moveEmptySpace = function (animate) {
 			/*jslint browser:true */
 			var itemToAnimateId,
 				itemToAnimate,
@@ -150,13 +158,9 @@ define([], function () {
 				callback,
 				animateFrom,
 				animateTo,
-				newAnimatedItemId;
+				newAnimatedItemId,
+				itemMargin;
 			if (true === animate) {
-				if (null === itemMargin) {
-					itemMargin = document.getElementById("item-2-1").offsetLeft 
-								- document.getElementById("item-1-1").offsetLeft 
-								- document.getElementById("item-2-1").offsetWidth;
-				}
 				newAnimatedItemId = "item-" + emptySpace.x + "-" + emptySpace.y;
 			}
 
@@ -169,6 +173,7 @@ define([], function () {
 
 			// animate
 			if (true === animate) {
+				itemMargin = 2 * this.serviceManager.getService("ShufflePuzzle").getItemMargin();
 				itemToAnimateId = "item-" + emptySpace.x + "-" + emptySpace.y ;
 				itemToAnimate = document.getElementById(itemToAnimateId);
 				isHorizontal = "left" === previousMovementTag || "right" === previousMovementTag;
@@ -203,19 +208,25 @@ define([], function () {
 				callback = function () {
 					itemToAnimate.id = newAnimatedItemId;
 					if (shuffleComplexity > 0) {
-						//TODO - fix in safari
-						moveEmptySpace(animate);
+						that.moveEmptySpace(animate);
 					}
 				};
-				animation(itemToAnimate, isHorizontal, animateFrom, animateTo, callback);
+				that.animateItem(
+					itemToAnimate,
+					isHorizontal,
+					animateFrom,
+					animateTo,
+					that.serviceManager.getService("ShufflePuzzle").getAnimationSpeed(),
+					callback
+				);
 			} else {
 				if (shuffleComplexity > 0) {
-					moveEmptySpace(animate);
+					this.moveEmptySpace(animate);
 				}
 			}
 
 			console.log("new empty space = [" + emptySpace.x + " ; " + emptySpace.y + "]");
-		}
+		};
 
 		this.setServiceManager = function (m) {
 			this.serviceManager = m;
@@ -275,9 +286,9 @@ define([], function () {
 		};
 
 		this.shuffle = function (n, animate) {
-			itemMargin = null;
+			canAnimate = true;
 			shuffleComplexity = n;
-			moveEmptySpace(animate);
+			this.moveEmptySpace(animate);
 		};
 
 	};
