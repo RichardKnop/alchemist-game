@@ -43,7 +43,7 @@ define([], function () {
 		};
 
 		this.getHTML = function () {
-			var boxWidth = 464,
+			var boxWidth = 332,
 				ingredientsPerRow = 5,
 				ingredientMargin = 5,
 				usefulBoxWidth = boxWidth - (ingredientsPerRow * 2 + 2) * ingredientMargin,
@@ -56,14 +56,25 @@ define([], function () {
 				left,
 				top,
 				boxStyle,
-				html;
+				html,
+				level,
+				score,
+				remainingTime,
+				formattedRemainingTime;
+
+			level = this.serviceManager.getService("Game").getLevel();
+			remainingTime = this.serviceManager.getService("Game").getRemainingTime();
+			formattedRemainingTime = this.serviceManager.getService("Game").formatTime(remainingTime);
+			score = this.serviceManager.getService("Game").getScore();
 
 			boxStyle = 'style="';
 			boxStyle += 'width:' + boxWidth + 'px;';
 			boxStyle += 'height:' + boxHeight + 'px;"';
 			boxStyle += '"';
 			html = '<div id="shuffle-puzzle" class="container">';
-			html += '<h1>Shuffle Puzzle</h1>';
+			html += '<div id="level">LEVEL ' + level + '</div>';
+			html += '<div id="time">' + formattedRemainingTime + '</div>';
+			html += '<div id="score">SCORE: ' + score + '</div>';
 			html += '<div class="box pull-left" ' + boxStyle + '>';
 
 			left = ingredientMargin * 2 + remainder / 2;
@@ -110,6 +121,10 @@ define([], function () {
 			html += '</div>';
 			html += '</div>';
 			return html;
+		};
+
+		this.afterRender = function () {
+			//TODO
 		};
 
 	};

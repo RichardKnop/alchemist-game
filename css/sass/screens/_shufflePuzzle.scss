@@ -6,8 +6,25 @@
 	padding: 24px;
 	background: url('/images/3/background.png') left top no-repeat;
 	background-size: 100% auto;
-	h1 {
+	position: relative;
+	#level, #time, #score {
+		position: absolute;
+		width: 100px;
+		height: 25px;
+		color: white;
 		text-align: center;
+	}
+	#level {
+		top: 17px;
+		left: 64px;
+	}
+	#time {
+		top: 25px;
+		left: 465px;
+	}
+	#score {
+		top: 17px;
+		left: 847px;
 	}
 	.box {
 		background: grey;
@@ -16,6 +33,14 @@
 			position: absolute;
 			background: black;
 			text-align: center;
+		}
+		&.pull-left {
+			margin-top: 168px;
+			margin-left: 95px;
+		}
+		&.pull-right {
+			margin-top: 169px;
+			margin-right: 88px;
 		}
 	}
 }

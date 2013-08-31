@@ -53,7 +53,8 @@ define([], function () {
 				level,
 				score,
 				remainingTime,
-				formattedRemainingTime;
+				formattedRemainingTime,
+				itemStyle;
 
 			level = this.serviceManager.getService("Game").getLevel();
 			remainingTime = this.serviceManager.getService("Game").getRemainingTime();
@@ -63,11 +64,34 @@ define([], function () {
 			html += '<div id="level">LEVEL ' + level + '</div>';
 			html += '<div id="time">' + formattedRemainingTime + '</div>';
 			html += '<div id="score">SCORE: ' + score + '</div>';
+
+			// left side
 			for (i = 0; i < items.length; i += 1) {
-				html += '<div id="' + items[i] + '" class="item"></div>';
+				html += '<div class="to-be-moved item ' + items[i] + '"></div>';
 			}
+
+			// right side
+			for (i = 0; i < items.length; i += 1) {
+				html += '<div class="item ' + items[i] + '"></div>';
+			}
+
 			html += "</div>";
 			return html;
+		};
+
+		this.afterRender = function () {
+			var toBeMoved, i, el;
+			toBeMoved = document.getElementsByClassName("to-be-moved");
+			for (i = 0; i < toBeMoved.length; i += 1) {
+				el = toBeMoved[i];
+				el.style.visibility = "hidden";
+				el.style.left = (el.offsetLeft - 481) + "px";
+			}
+			// randomize
+			for (i = 0; i < toBeMoved.length; i += 1) {
+				el = toBeMoved[i];
+				el.style.visibility = "visible";
+			}
 		};
 
 	};

@@ -64,6 +64,7 @@ define([
 
 			if (true === render) {
 				this.serviceManager.getService("Renderer").render(currentPuzzle);
+				currentPuzzle.afterRender();
 				startCountingDown();
 			}
 		};
