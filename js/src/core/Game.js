@@ -72,8 +72,12 @@ define([
 		this.nextPuzzle = function (render) {
 			puzzlesSolved += 1;
 			level = 1 + Math.floor(puzzlesSolved / 2);
+			remainingTime = baseTime + (level - 1) * 30;
+			score += 1000;
+
+			this.initPuzzle();
 			if (true === render) {
-				this.serviceManager.getService("Renderer").render();
+				this.serviceManager.getService("Renderer").render(currentPuzzle);
 			}
 		};
 

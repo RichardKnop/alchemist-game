@@ -30,6 +30,17 @@ define([], function () {
 				"bag"
 			];
 
+		function getStyle(x, styleProp) {
+			/*jslint browser:true */
+			var y;
+			if (x.currentStyle) {
+				y = x.currentStyle[styleProp];
+			} else if (window.getComputedStyle) {
+				y = document.defaultView.getComputedStyle(x, null).getPropertyValue(styleProp);
+			}
+			return y;
+		}
+
 		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
@@ -40,7 +51,7 @@ define([], function () {
 			this.game = this.serviceManager.getService("Game");
 			this.gen = this.serviceManager.getService("RandomGenerator");
 
-			this.gen.setMaximum(10); // TODO
+			this.gen.setMaximum(items.length);
 
 			random = this.gen.generateInteger();
 
@@ -80,18 +91,48 @@ define([], function () {
 		};
 
 		this.afterRender = function () {
-			var toBeMoved, i, el;
+			/*jslint browser:true */
+			var toBeMoved, all, i, el, bgImg;
+
+			all = document.getElementsByClassName("item");
 			toBeMoved = document.getElementsByClassName("to-be-moved");
+
+			// hide elements that will be moved to the left side
 			for (i = 0; i < toBeMoved.length; i += 1) {
 				el = toBeMoved[i];
 				el.style.visibility = "hidden";
 				el.style.left = (el.offsetLeft - 481) + "px";
 			}
+
 			// randomize
+			// TODO based on level
+			// TODO - add even listeners
+			el = all[random - 1];
+			bgImg = getStyle(el, 'background-image').replace("/items/", "/items2/");
+			console.log(bgImg);
+			el.style.backgroundImage = bgImg;
+			el.addEventListener("click", function () {
+				var newEl = this.cloneNode(true);
+				this.parentNode.replaceChild(newEl, this);
+				newEl.className += " animated tada";
+				setTimeout(function () {
+					that.serviceManager.getService("Game").nextPuzzle(true);
+				}, 2000);
+			}, false);
+
+			// make the left side visible
 			for (i = 0; i < toBeMoved.length; i += 1) {
 				el = toBeMoved[i];
 				el.style.visibility = "visible";
 			}
+
+			// make all items flash twice with a CSS3 animation
+			setTimeout(function () {
+				for (i = 0; i < all.length; i += 1) {
+					el = all[i];
+					el.className += " animated flash";
+				}
+			}, 250);
 		};
 
 	};

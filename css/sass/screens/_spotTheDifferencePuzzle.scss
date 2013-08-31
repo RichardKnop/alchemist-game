@@ -7,25 +7,6 @@
 	background: url('/images/2/background.png') left top no-repeat;
 	background-size: 100% auto;
 	position: relative;
-	#level, #time, #score {
-		position: absolute;
-		width: 100px;
-		height: 25px;
-		color: white;
-		text-align: center;
-	}
-	#level {
-		top: 17px;
-		left: 64px;
-	}
-	#time {
-		top: 25px;
-		left: 465px;
-	}
-	#score {
-		top: 17px;
-		left: 847px;
-	}
 	.item {
 		position: absolute;
 		background-position: left top;

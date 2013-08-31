@@ -30,3 +30,25 @@ body {
 .pull-right {
 	float: right;
 }
+
+#level, #time, #score {
+	position: absolute;
+	width: 100px;
+	height: 25px;
+	color: white;
+	text-align: center;
+	font-size: .9em;
+}
+#level {
+	top: 19px;
+	left: 64px;
+}
+#time {
+	top: 23px;
+	left: 465px;
+	font-size: 1.2em;
+}
+#score {
+	top: 19px;
+	left: 847px;
+}
