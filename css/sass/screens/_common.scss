@@ -56,3 +56,17 @@ body {
 	top: 19px;
 	left: 847px;
 }
+
+#intro-text {
+	background: transparent;
+	width: 1024px;
+	height: 50px;
+	line-height: 50px;
+	font-size: 50px;
+	text-align: center;
+	position: absolute;
+	left: 0;
+	top: 319px;
+	z-index: 100;
+	text-shadow: 2px 2px 3px rgba(150, 150, 150, 1);
+}

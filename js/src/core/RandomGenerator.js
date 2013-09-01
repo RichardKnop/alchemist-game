@@ -51,6 +51,20 @@ define([], function () {
 		this.generateInteger = function () {
 			return getRandomInt(1, maximum);
 		};
+		
+		this.generateIntegers = function (n) {
+			if (n > maximum) {
+				throw "Cannot generate that many random integers";
+			}
+			var integers = [], random;
+			while (integers.length < n) {
+				random = getRandomInt(1, maximum);
+				if (-1 === integers.indexOf(random)) {
+					integers.push(random);
+				}
+			}
+			return integers;
+		};
 
 		this.generateCoordinate = function () {
 			var c = {}, keepGoing = true;

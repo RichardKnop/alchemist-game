@@ -1,5 +1,5 @@
 /*global define*/
-define([], function () {
+define(["core/Util"], function (Util) {
 
 	"use strict";
 
@@ -8,7 +8,6 @@ define([], function () {
 		var that = this,
 			maximumX,
 			maximumY,
-			grid,
 			itemMargin = 4,
 			animationSpeed = 8,
 			items = [
@@ -93,14 +92,6 @@ define([], function () {
 			throw "Could not calculate move coordinate";
 		}
 
-		function playSlideSound() {
-			/*jslint browser:true */
-			console.log("AAAA");
-			var slideSound = document.getElementById("slide-sound");
-			slideSound.currentTime = 0;
-			slideSound.play();
-		}
-
 		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
@@ -169,6 +160,7 @@ define([], function () {
 			boxStyle += 'height:' + boxHeight + 'px;"';
 			boxStyle += '"';
 			html = '<div id="shuffle-puzzle" class="container">';
+			html += '<div id="intro-text" class="hidden">Rearrange tiles correctly!</div>';
 			html += '<div id="level">LEVEL ' + level + '</div>';
 			html += '<div id="time">' + formattedRemainingTime + '</div>';
 			html += '<div id="score">SCORE: ' + score + '</div>';
@@ -221,14 +213,27 @@ define([], function () {
 		this.afterRender = function (startCountingDown) {
 			var items, i, isHorizontal, from, to, callback,
 				shuffleComplexity = this.game.getShuffleComplexity();
+
 			setTimeout(function () {
-				that.shfl.shuffle(shuffleComplexity, true, startCountingDown);
-			}, 250);
+				that.shfl.shuffle(shuffleComplexity, true, function () {
+					var introText = document.getElementById("intro-text");
+					Util.removeClass(introText, "hidden");
+					introText.className += "animated fadeInDown";
+					setTimeout(function () {
+						introText.className += " fadeOutDown";
+						setTimeout(function () {
+							introText.parentNode.removeChild(introText);
+							startCountingDown();
+						}, 1000);
+					}, 1000);
+				});
+			}, 1000);
+
 			items = document.getElementsByClassName("item");
 			for (i = 0; i < items.length; i += 1) {
 				items[i].addEventListener("click", function () {
 					if (true === that.shfl.canAnimate()) {
-						playSlideSound();
+						Util.playSlideSound();
 
 						var emptySpace, splitId, x, y, item = this;
 						emptySpace = that.shfl.getEmptySpace();

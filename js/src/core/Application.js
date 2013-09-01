@@ -88,8 +88,7 @@ define([
 				"/images/3/items/ring.png",
 				"/images/3/items/books.png"
 			],
-			soundtrack,
-			sounds;
+			soundtrack;
 
 		function stopLoading(callback) {
 			clearInterval(loadingInterval);
@@ -166,12 +165,11 @@ define([
 			game.init();
 
 			soundtrack = document.getElementById("soundtrack");
-			sounds = document.getElementById("sounds");
 
-			startLoading(function() {
+			//startLoading(function() {
 				game.startNew(true);
 				startSoundtrack();
-			});
+			//});
 
 		};
 

@@ -1,5 +1,5 @@
 /*global define*/
-define(["vendor/rAF"], function () {
+define(["core/Util", "vendor/rAF"], function (Util) {
 
 	"use strict";
 
@@ -147,6 +147,7 @@ define(["vendor/rAF"], function () {
 					requestAnimationFrame(animation);
 				}
 			};
+			Util.playSlideSound();
 			anmationId = requestAnimationFrame(animation);
 		};
 

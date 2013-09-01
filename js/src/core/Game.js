@@ -105,6 +105,16 @@ define([
 			return 5;
 		};
 
+		this.getDifferences = function () {
+			if (level <= 2) {
+				return 1;
+			}
+			if (level <= 4) {
+				return 2;
+			}
+			return 3;
+		};
+
 		this.getShuffleComplexity = function () {
 			return 8 + level * 2;
 		};

@@ -1,12 +1,11 @@
 /*global define*/
-define([], function () {
+define(["core/Util"], function (Util) {
 
 	"use strict";
 
 	return function () {
 
 		var that = this,
-			random,
 			items = [
 				"jar",
 				"symbol",
@@ -55,21 +54,23 @@ define([], function () {
 			}, 250);
 		}
 
-		function playSuccessSound() {
-			/*jslint browser:true */
-			var successSound = document.getElementById("success-sound");
-			successSound.currentTime = 0;
-			successSound.play();
-		}
-
 		function itemClick() {
-			playSuccessSound();
-			var newEl = this.cloneNode(true);
+			/*jslint browser:true */
+			var newEl, bgImg;
+			Util.removeClass(this, "different");
+			Util.playSuccessSound();
+			newEl = this.cloneNode(true);
 			this.parentNode.replaceChild(newEl, this);
 			newEl.className += " animated tada";
-			setTimeout(function () {
-				that.serviceManager.getService("Game").nextPuzzle(true);
-			}, 2000);
+			bgImg = getStyle(newEl, 'background-image').replace("/items2/", "/items/");
+			newEl.style.backgroundImage = bgImg;
+
+			console.log(document.getElementsByClassName("different").length);
+			if (0 === document.getElementsByClassName("different").length) {
+				setTimeout(function () {
+					that.serviceManager.getService("Game").nextPuzzle(true);
+				}, 2000);
+			}
 		}
 
 		this.setServiceManager = function (m) {
@@ -84,8 +85,6 @@ define([], function () {
 
 			this.gen.setMaximum(items.length);
 
-			random = this.gen.generateInteger();
-
 			return this;
 		};
 
@@ -95,14 +94,14 @@ define([], function () {
 				level,
 				score,
 				remainingTime,
-				formattedRemainingTime,
-				itemStyle;
+				formattedRemainingTime;
 
 			level = this.serviceManager.getService("Game").getLevel();
 			remainingTime = this.serviceManager.getService("Game").getRemainingTime();
 			formattedRemainingTime = this.serviceManager.getService("Game").formatTime(remainingTime);
 			score = this.serviceManager.getService("Game").getScore();
 			html = '<div id="spot-the-difference-puzzle" class="container">';
+			html += '<div id="intro-text" class="hidden">Spot the difference!</div>';
 			html += '<div id="level">LEVEL ' + level + '</div>';
 			html += '<div id="time">' + formattedRemainingTime + '</div>';
 			html += '<div id="score">SCORE: ' + score + '</div>';
@@ -123,7 +122,7 @@ define([], function () {
 
 		this.afterRender = function (startCountingDown) {
 			/*jslint browser:true */
-			var toBeMoved, all, i, el, bgImg;
+			var toBeMoved, all, i, el, bgImg, numberOfDifferences, randoms;
 
 			all = document.getElementsByClassName("item");
 			toBeMoved = document.getElementsByClassName("to-be-moved");
@@ -135,13 +134,15 @@ define([], function () {
 				el.style.left = (el.offsetLeft - 481) + "px";
 			}
 
-			// randomize
-			// TODO based on level
-			// TODO - add event listeners
-			el = all[random - 1];
-			bgImg = getStyle(el, 'background-image').replace("/items/", "/items2/");
-			el.style.backgroundImage = bgImg;
-			el.addEventListener("click", itemClick, false);
+			numberOfDifferences = this.serviceManager.getService("Game").getDifferences();
+			randoms = this.gen.generateIntegers(numberOfDifferences);
+			for (i = 0; i < randoms.length; i += 1) {
+				el = all[randoms[i] - 1];
+				bgImg = getStyle(el, 'background-image').replace("/items/", "/items2/");
+				el.style.backgroundImage = bgImg;
+				el.className += " different";
+				el.addEventListener("click", itemClick, false);
+			}
 
 			// make the left side visible
 			for (i = 0; i < toBeMoved.length; i += 1) {
@@ -150,7 +151,20 @@ define([], function () {
 			}
 
 			// make all items flash twice with a CSS3 animation
-			flashItems(startCountingDown);
+			flashItems(function () {
+				setTimeout(function () {
+					var introText = document.getElementById("intro-text");
+					Util.removeClass(introText, "hidden");
+					introText.className += "animated fadeInDown";
+					setTimeout(function () {
+						introText.className += " fadeOutDown";
+						setTimeout(function () {
+							introText.parentNode.removeChild(introText);
+							startCountingDown();
+						}, 1000);
+					}, 1000);
+				}, 1000);
+			});
 		};
 
 		this.destruct = function () {
