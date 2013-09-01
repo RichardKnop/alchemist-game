@@ -58,7 +58,7 @@ define(["core/Util"], function (Util) {
 			/*jslint browser:true */
 			var newEl, bgImg, differencesLeft;
 
-			if (true === Util.isDisplayingTextMessage) {
+			if (true === Util.isDisplayingTextMessage()) {
 				return;
 			}
 
@@ -148,10 +148,13 @@ define(["core/Util"], function (Util) {
 				bgImg = getStyle(el, 'background-image').replace("/items/", "/items2/");
 				el.style.backgroundImage = bgImg;
 				el.className += " different";
-				Hammer(el).on("tap", function(event) {
-					itemClick();
-				});
-				//el.addEventListener("click", itemClick, false);
+				if (this.serviceManager.getService("Compatibility").isIOS()) {
+					Hammer(el).on("tap", function(event) {
+						itemClick();
+					});
+				} else {
+					el.addEventListener("click", itemClick, false);
+				}
 			}
 
 			// make the left side visible

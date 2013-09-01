@@ -3,20 +3,31 @@ define([], function () {
 
 	"use strict";
 
+	var successSound = new Audio("sound/success.wav"),
+		slideSound = new Audio("sound/slide.wav"),
+		soundtrack = new Audio("sound/soundtrack.wav"),
+		isDisplayingTextMessage = false;
+
 	return {
 
 		playSuccessSound: function () {
-			/*jslint browser:true */
-			var successSound = document.getElementById("success-sound");
 			successSound.currentTime = 0;
 			successSound.play();
 		},
 
 		playSlideSound: function () {
-			/*jslint browser:true */
-			var slideSound = document.getElementById("slide-sound");
 			slideSound.currentTime = 0;
 			slideSound.play();
+		},
+
+		startSoundtrack: function () {
+			soundtrack.play();
+			soundtrack.addEventListener('ended', function () {
+				setTimeout(function () {
+					soundtrack.currentTime = 0;
+					soundtrack.play();
+				}, 5000);
+			}, false);
 		},
 		
 		removeClass: function (el, className) {
@@ -24,12 +35,10 @@ define([], function () {
 			el.className = el.className.replace(regex, "");
 		},
 
-		isDisplayingTextMessage: false,
-
 		displayTextMessage: function (message, callback) {
 			/*jslint browser:true */
 			var textMessage, that = this;
-			this.isDisplayingTextMessage = true;
+			isDisplayingTextMessage = true;
 			textMessage = document.getElementById("text-message");
 			if (null === textMessage) {
 				textMessage = document.createElement("div");
@@ -45,9 +54,13 @@ define([], function () {
 					if (callback) {
 						callback();
 					}
-					that.isDisplayingTextMessage = false;
+					isDisplayingTextMessage = false;
 				}, 1000);
 			}, 1000);
+		},
+
+		isDisplayingTextMessage: function () {
+			return isDisplayingTextMessage;
 		}
 
 	};

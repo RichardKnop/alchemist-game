@@ -122,7 +122,7 @@ define(["core/Util"], function (Util) {
 			var isHorizontal, from, to, callback,
 				emptySpace, splitId, x, y, item = this;
 
-			if (true === Util.isDisplayingTextMessage) {
+			if (true === Util.isDisplayingTextMessage()) {
 				return;
 			}
 
@@ -296,10 +296,13 @@ define(["core/Util"], function (Util) {
 						function () {
 							items = document.getElementsByClassName("movable");
 							for (i = 0; i < items.length; i += 1) {
-								Hammer(items[i]).on("tap", function(event) {
-									itemClick();
-								});
-								//items[i].addEventListener("click", itemClick, false);
+								if (that.serviceManager.getService("Compatibility").isIOS()) {
+									Hammer(items[i]).on("tap", function(event) {
+										itemClick();
+									});
+								} else {
+									items[i].addEventListener("click", itemClick, false);
+								}
 							}
 							startCountingDown();
 						}

@@ -5,14 +5,18 @@ define([
 	"core/CookieManager",
 	"core/RandomGenerator",
 	"core/GridShuffler",
-	"core/Game"
+	"core/Game",
+	"core/Compatibility",
+	"core/Util"
 ], function (
 	ServiceManager,
 	Renderer,
 	CookieManager,
 	RandomGenerator,
 	GridShuffler,
-	Game
+	Game,
+	Compatibility,
+	Util
 ) {
 
 	"use strict";
@@ -121,17 +125,6 @@ define([
 			}
 		}
 
-		function startSoundtrack() {
-			soundtrack.play();
-			soundtrack.addEventListener('ended', function () {
-				var audio = this;
-				setTimeout(function () {
-					audio.currentTime = 0;
-					audio.play();
-				}, 5000);
-			}, false);
-		}
-
 		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
@@ -162,13 +155,18 @@ define([
 				"Game",
 				game
 			);
+			var compatibility = new Compatibility();
+			this.serviceManager.setService(
+				"Compatibility",
+				compatibility
+			);
 			game.init();
 
 			soundtrack = document.getElementById("soundtrack");
 
 			startLoading(function() {
 				game.startNew(true);
-				startSoundtrack();
+				Util.startSoundtrack();
 			});
 
 		};
