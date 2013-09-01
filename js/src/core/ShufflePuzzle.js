@@ -296,7 +296,10 @@ define(["core/Util"], function (Util) {
 						function () {
 							items = document.getElementsByClassName("movable");
 							for (i = 0; i < items.length; i += 1) {
-								items[i].addEventListener("click", itemClick, false);
+								Hammer(items[i]).on("tap", function(event) {
+									itemClick();
+								});
+								//items[i].addEventListener("click", itemClick, false);
 							}
 							startCountingDown();
 						}

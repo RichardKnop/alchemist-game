@@ -148,7 +148,10 @@ define(["core/Util"], function (Util) {
 				bgImg = getStyle(el, 'background-image').replace("/items/", "/items2/");
 				el.style.backgroundImage = bgImg;
 				el.className += " different";
-				el.addEventListener("click", itemClick, false);
+				Hammer(el).on("tap", function(event) {
+					itemClick();
+				});
+				//el.addEventListener("click", itemClick, false);
 			}
 
 			// make the left side visible
