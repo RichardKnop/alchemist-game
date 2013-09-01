@@ -93,6 +93,14 @@ define([], function () {
 			throw "Could not calculate move coordinate";
 		}
 
+		function playSlideSound() {
+			/*jslint browser:true */
+			console.log("AAAA");
+			var slideSound = document.getElementById("slide-sound");
+			slideSound.currentTime = 0;
+			slideSound.play();
+		}
+
 		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
@@ -220,6 +228,8 @@ define([], function () {
 			for (i = 0; i < items.length; i += 1) {
 				items[i].addEventListener("click", function () {
 					if (true === that.shfl.canAnimate()) {
+						playSlideSound();
+
 						var emptySpace, splitId, x, y, item = this;
 						emptySpace = that.shfl.getEmptySpace();
 						splitId = this.id.split("-");

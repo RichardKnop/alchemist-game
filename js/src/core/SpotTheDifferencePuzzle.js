@@ -41,6 +41,37 @@ define([], function () {
 			return y;
 		}
 
+		function flashItems(callback) {
+			/*jslint browser:true */
+			var items = document.getElementsByClassName("item"), el, i;
+			setTimeout(function () {
+				for (i = 0; i < items.length; i += 1) {
+					el = items[i];
+					el.className += " animated flash";
+				}
+				if (callback) {
+					callback();
+				}
+			}, 250);
+		}
+
+		function playSuccessSound() {
+			/*jslint browser:true */
+			var successSound = document.getElementById("success-sound");
+			successSound.currentTime = 0;
+			successSound.play();
+		}
+
+		function itemClick() {
+			playSuccessSound();
+			var newEl = this.cloneNode(true);
+			this.parentNode.replaceChild(newEl, this);
+			newEl.className += " animated tada";
+			setTimeout(function () {
+				that.serviceManager.getService("Game").nextPuzzle(true);
+			}, 2000);
+		}
+
 		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
@@ -106,19 +137,11 @@ define([], function () {
 
 			// randomize
 			// TODO based on level
-			// TODO - add even listeners
+			// TODO - add event listeners
 			el = all[random - 1];
 			bgImg = getStyle(el, 'background-image').replace("/items/", "/items2/");
-			console.log(bgImg);
 			el.style.backgroundImage = bgImg;
-			el.addEventListener("click", function () {
-				var newEl = this.cloneNode(true);
-				this.parentNode.replaceChild(newEl, this);
-				newEl.className += " animated tada";
-				setTimeout(function () {
-					that.serviceManager.getService("Game").nextPuzzle(true);
-				}, 2000);
-			}, false);
+			el.addEventListener("click", itemClick, false);
 
 			// make the left side visible
 			for (i = 0; i < toBeMoved.length; i += 1) {
@@ -127,13 +150,7 @@ define([], function () {
 			}
 
 			// make all items flash twice with a CSS3 animation
-			setTimeout(function () {
-				for (i = 0; i < all.length; i += 1) {
-					el = all[i];
-					el.className += " animated flash";
-				}
-				startCountingDown();
-			}, 250);
+			flashItems(startCountingDown);
 		};
 
 		this.destruct = function () {
