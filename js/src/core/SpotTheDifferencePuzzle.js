@@ -56,7 +56,12 @@ define(["core/Util"], function (Util) {
 
 		function itemClick() {
 			/*jslint browser:true */
-			var newEl, bgImg;
+			var newEl, bgImg, differencesLeft;
+
+			if (true === Util.isDisplayingTextMessage) {
+				return;
+			}
+
 			Util.removeClass(this, "different");
 			Util.playSuccessSound();
 			newEl = this.cloneNode(true);
@@ -65,11 +70,16 @@ define(["core/Util"], function (Util) {
 			bgImg = getStyle(newEl, 'background-image').replace("/items2/", "/items/");
 			newEl.style.backgroundImage = bgImg;
 
-			console.log(document.getElementsByClassName("different").length);
-			if (0 === document.getElementsByClassName("different").length) {
-				setTimeout(function () {
-					that.serviceManager.getService("Game").nextPuzzle(true);
-				}, 2000);
+			differencesLeft = document.getElementsByClassName("different").length;
+			if (0 === differencesLeft) {
+				Util.displayTextMessage(
+					"Good job!",
+					function () {
+						that.serviceManager.getService("Game").nextPuzzle(true);
+					}
+				);
+			} else {
+				Util.displayTextMessage(differencesLeft + " more!");
 			}
 		}
 
@@ -78,8 +88,6 @@ define(["core/Util"], function (Util) {
 		};
 
 		this.init = function () {
-			console.log("Creating a new spot the difference puzzle");
-
 			this.game = this.serviceManager.getService("Game");
 			this.gen = this.serviceManager.getService("RandomGenerator");
 
@@ -101,7 +109,6 @@ define(["core/Util"], function (Util) {
 			formattedRemainingTime = this.serviceManager.getService("Game").formatTime(remainingTime);
 			score = this.serviceManager.getService("Game").getScore();
 			html = '<div id="spot-the-difference-puzzle" class="container">';
-			html += '<div id="intro-text" class="hidden">Spot the difference!</div>';
 			html += '<div id="level">LEVEL ' + level + '</div>';
 			html += '<div id="time">' + formattedRemainingTime + '</div>';
 			html += '<div id="score">SCORE: ' + score + '</div>';
@@ -153,16 +160,10 @@ define(["core/Util"], function (Util) {
 			// make all items flash twice with a CSS3 animation
 			flashItems(function () {
 				setTimeout(function () {
-					var introText = document.getElementById("intro-text");
-					Util.removeClass(introText, "hidden");
-					introText.className += "animated fadeInDown";
-					setTimeout(function () {
-						introText.className += " fadeOutDown";
-						setTimeout(function () {
-							introText.parentNode.removeChild(introText);
-							startCountingDown();
-						}, 1000);
-					}, 1000);
+					Util.displayTextMessage(
+						"Spot differences!",
+						startCountingDown
+					);
 				}, 1000);
 			});
 		};

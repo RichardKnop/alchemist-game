@@ -10,8 +10,7 @@ define([
 	"use strict";
 
 	domReady(function() {
-		
-		console.log("Bootstraping the application");
+
 		var application = new Application();
 		application.run();
 		

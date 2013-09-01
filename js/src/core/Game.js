@@ -75,7 +75,7 @@ define([
 			puzzlesSolved += 1;
 			level = 1 + Math.floor(puzzlesSolved / 2);
 			remainingTime = baseTime + (level - 1) * 30;
-			score += 1000;
+			score += 100;
 
 			this.initPuzzle();
 			if (true === render) {

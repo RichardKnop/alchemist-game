@@ -8,10 +8,6 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 		var that = this, maximumX, maximumY, shuffleComplexity, 
 			grid, emptySpace, previousMovementTag, i, canAnimate = false;
 
-		function logPointMovement(from, to) {
-			console.log("[" + from.x + " ; " + from.y + "] => [" + to.x + " ; " + to.y + "]");
-		}
-
 		function getPointByCoordinates(x, y) {
 			for (i = 0; i < grid.length; i += 1) {
 				if (x === grid[i].x && y === grid[i].y) {
@@ -26,7 +22,6 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 				emptySpace.x - 1,
 				emptySpace.y
 			);
-			logPointMovement(emptySpace, point);
 			point.x += 1;
 			emptySpace.x -= 1;
 			previousMovementTag = "left";
@@ -37,7 +32,6 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 				emptySpace.x + 1,
 				emptySpace.y
 			);
-			logPointMovement(emptySpace, point);
 			point.x -= 1;
 			emptySpace.x += 1;
 			previousMovementTag = "right";
@@ -48,7 +42,6 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 				emptySpace.x,
 				emptySpace.y - 1
 			);
-			logPointMovement(emptySpace, point);
 			point.y += 1;
 			emptySpace.y -= 1;
 			previousMovementTag = "down";
@@ -59,7 +52,6 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 				emptySpace.x,
 				emptySpace.y + 1
 			);
-			logPointMovement(emptySpace, point);
 			point.y -= 1;
 			emptySpace.y += 1;
 			previousMovementTag = "up";
@@ -163,7 +155,6 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 				itemMargin;
 			if (true === animate) {
 				newAnimatedItemId = "item-" + emptySpace.x + "-" + emptySpace.y;
-				console.log(newAnimatedItemId);
 			}
 
 			shuffleComplexity -= 1;
@@ -228,8 +219,6 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 					this.moveEmptySpace(animate);
 				}
 			}
-
-			console.log("new empty space = [" + emptySpace.x + " ; " + emptySpace.y + "]");
 		};
 
 		this.setServiceManager = function (m) {
@@ -281,8 +270,6 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 				x: x,
 				y: y
 			};
-
-			console.log("initial empty space = [" + emptySpace.x + " ; " + emptySpace.y + "]");
 		};
 
 		this.getEmptySpace = function () {

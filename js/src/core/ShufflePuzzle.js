@@ -92,13 +92,89 @@ define(["core/Util"], function (Util) {
 			throw "Could not calculate move coordinate";
 		}
 
+		function extractItemClass(el) {
+			var splitClass = el.className.split(" "), i;
+			for (i = 0; i < splitClass.length; i += 1) {
+				if (-1 !== items.indexOf(splitClass[i])) {
+					return splitClass[i];
+				}
+			}
+			throw "Could not extract item class";
+		}
+
+		function checkIfPuzzleIsSolved() {
+			/*jslint browser:true */
+			var leftItems, i, el;
+			leftItems = document.getElementsByClassName("movable");
+			for (i = 0; i < leftItems.length; i += 1) {
+				if ("item-" + maximumX + "-1" === leftItems[i].id) {
+					return false;
+				}
+				el = document.getElementById(leftItems[i].id.replace("item", "item2"));
+				if (extractItemClass(leftItems[i]) !== extractItemClass(el)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		function itemClick() {
+			var isHorizontal, from, to, callback,
+				emptySpace, splitId, x, y, item = this;
+
+			if (true === Util.isDisplayingTextMessage) {
+				return;
+			}
+
+			if (false === that.shfl.canAnimate()) {
+				return;
+			}
+
+			Util.playSlideSound();
+
+			emptySpace = that.shfl.getEmptySpace();
+			splitId = this.id.split("-");
+			x = parseInt(splitId[1], 10);
+			y = parseInt(splitId[2], 10);
+			from = {
+				x: item.offsetLeft,
+				y: item.offsetTop
+			};
+
+			try {
+				to = getMoveCoordinate(item, emptySpace, x, y);
+				isHorizontal = isNextMoveHorizontal(emptySpace, x, y);
+
+				callback = function () {
+					item.id = "item-" + emptySpace.x + "-" + emptySpace.y;
+					that.shfl.setEmptySpace(x, y);
+					if (checkIfPuzzleIsSolved()) {
+						Util.displayTextMessage(
+							"Good job!",
+							function () {
+								that.serviceManager.getService("Game").nextPuzzle(true);
+							}
+						);
+					}
+				};
+				that.shfl.animateItem(
+					item,
+					isHorizontal,
+					from,
+					to,
+					that.getAnimationSpeed(),
+					callback
+				);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+
 		this.setServiceManager = function (m) {
 			this.serviceManager = m;
 		};
 
 		this.init = function () {
-			console.log("Creating a new shuffle puzzle");
-
 			this.game = this.serviceManager.getService("Game");
 			this.gen = this.serviceManager.getService("RandomGenerator");
 			this.shfl = this.serviceManager.getService("GridShuffler");
@@ -160,7 +236,6 @@ define(["core/Util"], function (Util) {
 			boxStyle += 'height:' + boxHeight + 'px;"';
 			boxStyle += '"';
 			html = '<div id="shuffle-puzzle" class="container">';
-			html += '<div id="intro-text" class="hidden">Rearrange tiles correctly!</div>';
 			html += '<div id="level">LEVEL ' + level + '</div>';
 			html += '<div id="time">' + formattedRemainingTime + '</div>';
 			html += '<div id="score">SCORE: ' + score + '</div>';
@@ -175,7 +250,7 @@ define(["core/Util"], function (Util) {
 				ingredientStyle += 'left:' + left + 'px;';
 				ingredientStyle += 'top:' + top + 'px;';
 				ingredientStyle += '"';
-				html += '<div id="' + generateId(i, chosenItems.length) + '" class="item ' + chosenItems[i - 1] + '" ' + ingredientStyle + '></div>';
+				html += '<div id="' + generateId(i, chosenItems.length) + '" class="item movable ' + chosenItems[i - 1] + '" ' + ingredientStyle + '></div>';
 				if (0 === i % ingredientsPerRow) {
 					left = itemMargin * 2 + remainder / 2;
 					top += ingredientHeight + itemMargin * 2;
@@ -196,7 +271,7 @@ define(["core/Util"], function (Util) {
 				ingredientStyle += 'left:' + left + 'px;';
 				ingredientStyle += 'top:' + top + 'px;';
 				ingredientStyle += '"';
-				html += '<div class="item ' + chosenItems[i - 1] + '" ' + ingredientStyle + '></div>';
+				html += '<div id="' + generateId(i, chosenItems.length).replace("item", "item2") + '" class="item non-movable ' + chosenItems[i - 1] + '" ' + ingredientStyle + '></div>';
 				if (0 === i % ingredientsPerRow) {
 					left = itemMargin * 2 + remainder / 2;
 					top += ingredientHeight + itemMargin * 2;
@@ -211,62 +286,24 @@ define(["core/Util"], function (Util) {
 		};
 
 		this.afterRender = function (startCountingDown) {
-			var items, i, isHorizontal, from, to, callback,
-				shuffleComplexity = this.game.getShuffleComplexity();
+			/*jslint browser:true */
+			var items, i, shuffleComplexity = this.game.getShuffleComplexity();
 
 			setTimeout(function () {
 				that.shfl.shuffle(shuffleComplexity, true, function () {
-					var introText = document.getElementById("intro-text");
-					Util.removeClass(introText, "hidden");
-					introText.className += "animated fadeInDown";
-					setTimeout(function () {
-						introText.className += " fadeOutDown";
-						setTimeout(function () {
-							introText.parentNode.removeChild(introText);
+					Util.displayTextMessage(
+						"Rearrange tiles correctly!",
+						function () {
+							items = document.getElementsByClassName("movable");
+							for (i = 0; i < items.length; i += 1) {
+								items[i].addEventListener("click", itemClick, false);
+							}
 							startCountingDown();
-						}, 1000);
-					}, 1000);
+						}
+						
+					);
 				});
 			}, 1000);
-
-			items = document.getElementsByClassName("item");
-			for (i = 0; i < items.length; i += 1) {
-				items[i].addEventListener("click", function () {
-					if (true === that.shfl.canAnimate()) {
-						Util.playSlideSound();
-
-						var emptySpace, splitId, x, y, item = this;
-						emptySpace = that.shfl.getEmptySpace();
-						splitId = this.id.split("-");
-						x = parseInt(splitId[1], 10);
-						y = parseInt(splitId[2], 10);
-						from = {
-							x: item.offsetLeft,
-							y: item.offsetTop
-						};
-
-						try {
-							to = getMoveCoordinate(item, emptySpace, x, y);
-							isHorizontal = isNextMoveHorizontal(emptySpace, x, y);
-
-							callback = function () {
-								item.id = "item-" + emptySpace.x + "-" + emptySpace.y;
-								that.shfl.setEmptySpace(x, y);
-							};
-							that.shfl.animateItem(
-								item,
-								isHorizontal,
-								from,
-								to,
-								that.getAnimationSpeed(),
-								callback
-							);
-						} catch (e) {
-							console.log(e);
-						}
-					}
-				}, false);
-			}
 		};
 		
 		this.destruct = function () {

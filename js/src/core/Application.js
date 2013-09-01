@@ -166,10 +166,10 @@ define([
 
 			soundtrack = document.getElementById("soundtrack");
 
-			//startLoading(function() {
+			startLoading(function() {
 				game.startNew(true);
 				startSoundtrack();
-			//});
+			});
 
 		};
 
