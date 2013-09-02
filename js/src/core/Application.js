@@ -23,7 +23,8 @@ define([
 
 	return function () {
 
-		var that = this, loadingInterval,
+		var that = this,
+			loadingInterval,
 			imagesToPreload = [
 				"images/2/background.png",
 				"images/2/items/jar.png",
@@ -91,8 +92,7 @@ define([
 				"images/3/items/key.png",
 				"images/3/items/ring.png",
 				"images/3/items/books.png"
-			],
-			soundtrack;
+			];
 
 		function stopLoading(callback) {
 			clearInterval(loadingInterval);
@@ -160,13 +160,16 @@ define([
 				"Compatibility",
 				compatibility
 			);
+			var util = new Util();
+			this.serviceManager.setService(
+				"Util",
+				util
+			);
 			game.init();
-
-			soundtrack = document.getElementById("soundtrack");
 
 			startLoading(function() {
 				game.startNew(true);
-				Util.startSoundtrack();
+				util.startSoundtrack();
 			});
 
 		};

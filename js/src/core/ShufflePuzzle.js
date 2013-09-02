@@ -1,5 +1,5 @@
 /*global define*/
-define(["core/Util"], function (Util) {
+define(["core/Util", "vendor/Hammer"], function (Util) {
 
 	"use strict";
 
@@ -118,11 +118,17 @@ define(["core/Util"], function (Util) {
 			return true;
 		}
 
-		function itemClick() {
+		function itemClick(event) {
 			var isHorizontal, from, to, callback,
-				emptySpace, splitId, x, y, item = this;
+				emptySpace, splitId, x, y, scope;
 
-			if (true === Util.isDisplayingTextMessage()) {
+			if (that.serviceManager.getService("Compatibility").isIOS()) {
+				scope = event.srcElement;
+			} else {
+				scope = this;
+			}
+
+			if (true === that.serviceManager.getService("Util").isDisplayingTextMessage()) {
 				return;
 			}
 
@@ -130,26 +136,26 @@ define(["core/Util"], function (Util) {
 				return;
 			}
 
-			Util.playSlideSound();
+			that.serviceManager.getService("Util").playSlideSound();
 
 			emptySpace = that.shfl.getEmptySpace();
-			splitId = this.id.split("-");
+			splitId = scope.id.split("-");
 			x = parseInt(splitId[1], 10);
 			y = parseInt(splitId[2], 10);
 			from = {
-				x: item.offsetLeft,
-				y: item.offsetTop
+				x: scope.offsetLeft,
+				y: scope.offsetTop
 			};
 
 			try {
-				to = getMoveCoordinate(item, emptySpace, x, y);
+				to = getMoveCoordinate(scope, emptySpace, x, y);
 				isHorizontal = isNextMoveHorizontal(emptySpace, x, y);
 
 				callback = function () {
-					item.id = "item-" + emptySpace.x + "-" + emptySpace.y;
+					scope.id = "item-" + emptySpace.x + "-" + emptySpace.y;
 					that.shfl.setEmptySpace(x, y);
 					if (checkIfPuzzleIsSolved()) {
-						Util.displayTextMessage(
+						that.serviceManager.getService("Util").displayTextMessage(
 							"Good job!",
 							function () {
 								that.serviceManager.getService("Game").nextPuzzle(true);
@@ -158,7 +164,7 @@ define(["core/Util"], function (Util) {
 					}
 				};
 				that.shfl.animateItem(
-					item,
+					scope,
 					isHorizontal,
 					from,
 					to,
@@ -291,14 +297,14 @@ define(["core/Util"], function (Util) {
 
 			setTimeout(function () {
 				that.shfl.shuffle(shuffleComplexity, true, function () {
-					Util.displayTextMessage(
+					that.serviceManager.getService("Util").displayTextMessage(
 						"Rearrange tiles correctly!",
 						function () {
 							items = document.getElementsByClassName("movable");
 							for (i = 0; i < items.length; i += 1) {
 								if (that.serviceManager.getService("Compatibility").isIOS()) {
 									Hammer(items[i]).on("tap", function(event) {
-										itemClick();
+										itemClick(event);
 									});
 								} else {
 									items[i].addEventListener("click", itemClick, false);

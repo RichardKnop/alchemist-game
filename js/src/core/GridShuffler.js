@@ -139,7 +139,7 @@ define(["core/Util", "vendor/rAF"], function (Util) {
 					requestAnimationFrame(animation);
 				}
 			};
-			Util.playSlideSound();
+			this.serviceManager.getService("Util").playSlideSound();
 			anmationId = requestAnimationFrame(animation);
 		};
 

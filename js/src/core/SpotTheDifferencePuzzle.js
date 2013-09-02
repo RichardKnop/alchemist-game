@@ -1,5 +1,5 @@
 /*global define*/
-define(["core/Util"], function (Util) {
+define(["core/Util", "vendor/Hammer"], function (Util) {
 
 	"use strict";
 
@@ -54,32 +54,38 @@ define(["core/Util"], function (Util) {
 			}, 250);
 		}
 
-		function itemClick() {
+		function itemClick(event) {
 			/*jslint browser:true */
-			var newEl, bgImg, differencesLeft;
+			var newEl, bgImg, differencesLeft, scope;
 
-			if (true === Util.isDisplayingTextMessage()) {
+			if (that.serviceManager.getService("Compatibility").isIOS()) {
+				scope = event.srcElement;
+			} else {
+				scope = this;
+			}
+
+			if (true === that.serviceManager.getService("Util").isDisplayingTextMessage()) {
 				return;
 			}
 
-			Util.removeClass(this, "different");
-			Util.playSuccessSound();
-			newEl = this.cloneNode(true);
-			this.parentNode.replaceChild(newEl, this);
+			that.serviceManager.getService("Util").removeClass(scope, "different");
+			that.serviceManager.getService("Util").playSuccessSound();
+			newEl = scope.cloneNode(scope);
+			scope.parentNode.replaceChild(newEl, scope);
 			newEl.className += " animated tada";
 			bgImg = getStyle(newEl, 'background-image').replace("/items2/", "/items/");
 			newEl.style.backgroundImage = bgImg;
 
 			differencesLeft = document.getElementsByClassName("different").length;
 			if (0 === differencesLeft) {
-				Util.displayTextMessage(
+				that.serviceManager.getService("Util").displayTextMessage(
 					"Good job!",
 					function () {
 						that.serviceManager.getService("Game").nextPuzzle(true);
 					}
 				);
 			} else {
-				Util.displayTextMessage(differencesLeft + " more!");
+				that.serviceManager.getService("Util").displayTextMessage(differencesLeft + " more!");
 			}
 		}
 
@@ -150,7 +156,7 @@ define(["core/Util"], function (Util) {
 				el.className += " different";
 				if (this.serviceManager.getService("Compatibility").isIOS()) {
 					Hammer(el).on("tap", function(event) {
-						itemClick();
+						itemClick(event);
 					});
 				} else {
 					el.addEventListener("click", itemClick, false);
@@ -166,7 +172,7 @@ define(["core/Util"], function (Util) {
 			// make all items flash twice with a CSS3 animation
 			flashItems(function () {
 				setTimeout(function () {
-					Util.displayTextMessage(
+					that.serviceManager.getService("Util").displayTextMessage(
 						"Spot differences!",
 						startCountingDown
 					);
