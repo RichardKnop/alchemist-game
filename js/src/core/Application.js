@@ -109,15 +109,27 @@ define([
 				max = 510.0,
 				increment = 5.1,
 				i,
+				j = 0,
+				loadingTextRotation = [
+					"Loading... Please wait.&nbsp;&nbsp;",
+					"Loading... Please wait..&nbsp;",
+					"Loading... Please wait...",
+					"Loading... Please wait&nbsp;&nbsp;&nbsp;"
+				],
 				img;
 			loadingInterval = setInterval(function () {
+				j += 1;
+				if (0 === j % 14) {
+					document.getElementsByTagName("h1")[0].innerHTML = loadingTextRotation[0];
+					loadingTextRotation.push(loadingTextRotation.shift());
+				}
 				w += increment;
 				innerIndicator.style.width = Math.round(w) + "px";
 				progressText.innerHTML = Math.floor(w / increment) + "%";
 				if (w >= max) {
 					stopLoading(callback);
 				}
-			}, 25);
+			}, 35);
 			// preload images
 			for (i = 0; i < imagesToPreload.length; i += 1) {
 				img = new Image();
