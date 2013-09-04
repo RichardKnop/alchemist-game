@@ -1,7 +1,7 @@
 /*global define*/
 define([
 	"core/AbstractPuzzle",
-	"vendor/Hammer"
+	"vendor/hammer"
 ], function (
 	AbstractPuzzle
 ) {
