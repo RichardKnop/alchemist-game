@@ -1,9 +1,16 @@
 /*global define*/
-define(["core/Util", "vendor/Hammer"], function (Util) {
+define([
+	"core/AbstractPuzzle",
+	"vendor/Hammer"
+], function (
+	AbstractPuzzle
+) {
 
 	"use strict";
 
-	return function () {
+	var puzzle = function () {
+
+		AbstractPuzzle.call(this);
 
 		var that = this,
 			items = [
@@ -89,10 +96,6 @@ define(["core/Util", "vendor/Hammer"], function (Util) {
 			}
 		}
 
-		this.setServiceManager = function (m) {
-			this.serviceManager = m;
-		};
-
 		this.init = function () {
 			this.game = this.serviceManager.getService("Game");
 			this.gen = this.serviceManager.getService("RandomGenerator");
@@ -133,9 +136,20 @@ define(["core/Util", "vendor/Hammer"], function (Util) {
 			return html;
 		};
 
-		this.afterRender = function (startCountingDown) {
+		this.afterRender = function (startCountingDown, scoreIncrease) {
 			/*jslint browser:true */
-			var toBeMoved, all, i, el, bgImg, numberOfDifferences, randoms;
+			var toBeMoved,
+				all,
+				i,
+				el,
+				bgImg,
+				numberOfDifferences,
+				randoms;
+
+			this.afterRenderCommon(
+				this.serviceManager.getService("Game").getScore(),
+				scoreIncrease
+			);
 
 			all = document.getElementsByClassName("item");
 			toBeMoved = document.getElementsByClassName("to-be-moved");
@@ -185,5 +199,9 @@ define(["core/Util", "vendor/Hammer"], function (Util) {
 		};
 
 	};
+
+	puzzle.prototype = AbstractPuzzle.prototype;
+
+	return puzzle;
 
 });

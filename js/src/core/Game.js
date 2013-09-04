@@ -11,8 +11,14 @@ define([
 
 	return function () {
 
-		var that = this, puzzlesSolved, currentPuzzle, score, level,
-			baseTime = 120, remainingTime, remainingTimeInterval;
+		var that = this,
+			puzzlesSolved,
+			currentPuzzle,
+			score,
+			level,
+			baseTime = 120,
+			remainingTime,
+			remainingTimeInterval;
 
 		function ranOutOfTime() {
 			console.log("weee, no more time!!!");
@@ -67,7 +73,7 @@ define([
 
 			if (true === render) {
 				this.serviceManager.getService("Renderer").render(currentPuzzle);
-				currentPuzzle.afterRender(startCountingDown);
+				currentPuzzle.afterRender(startCountingDown, 0);
 			}
 		};
 
@@ -75,14 +81,17 @@ define([
 			puzzlesSolved += 1;
 			level = 1 + Math.floor(puzzlesSolved / 2);
 			remainingTime = baseTime + (level - 1) * 30;
-			score += 100;
 
 			this.initPuzzle();
 			if (true === render) {
 				this.serviceManager.getService("Renderer").render(currentPuzzle);
 				clearInterval(remainingTimeInterval);
-				currentPuzzle.afterRender(startCountingDown);
+				currentPuzzle.afterRender(startCountingDown, 100);
 			}
+		};
+
+		this.increaseScore = function (s) {
+			score += s;
 		};
 
 		this.getMaximumX = function () {
