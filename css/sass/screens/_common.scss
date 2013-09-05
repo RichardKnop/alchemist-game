@@ -18,6 +18,7 @@ body {
 #wrapper {
 	width: 1024px;
 	height: 768px;
+	overflow: hidden;
 }
 
 .hidden {
@@ -39,6 +40,9 @@ body {
 	color: white;
 	text-align: center;
 	font-size: .9em;
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
 }
 #level {
 	top: 19px;
@@ -66,4 +70,7 @@ body {
 	top: 319px;
 	z-index: 100;
 	text-shadow: 2px 2px 3px rgba(150, 150, 150, 1);
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
 }
